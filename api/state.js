@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const { blobs } = await list({ prefix: pathname, limit: 1 });
       if (!blobs.length) return res.status(200).json({ ok: true, state: null });
-      const r = await fetch(blobs[0].url, { cache: 'no-store' });
+      const r = await fetch(blobs[0].url + '?cache=0', { cache: 'no-store' });
       if (!r.ok) return res.status(200).json({ ok: true, state: null });
       return res.status(200).json({ ok: true, state: await r.json() });
     }
