@@ -158,9 +158,15 @@ td.t{font-family:var(--mono);white-space:nowrap;font-size:13px}
 .tasbar i{display:block;height:100%;background:var(--inundatie)}
 
 #routeKaart{height:440px;background:var(--polder);border:1px solid var(--lijn)}
-#routeKaart .leaflet-tooltip{font-family:var(--body);font-size:12.5px}
+#routeKaart .leaflet-tooltip,.dag-kaart .leaflet-tooltip{font-family:var(--body);font-size:12.5px}
 .kaart-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:2px;vertical-align:1px}
 .kaart-caption{font-size:13px;color:var(--water-45);margin-top:10px}
+.dag-kaart{height:220px;background:var(--polder);border:1px solid var(--lijn);margin-top:16px}
+.kort{display:flex;flex-wrap:wrap;gap:12px 26px;margin:14px 0 0;padding:14px 16px;
+  background:rgba(63,127,137,.07);border:1px solid var(--lijn)}
+.kort div{font-size:13.5px;flex:1 1 200px}
+.kort b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--inundatie);margin-bottom:3px;font-weight:400}
 
 .winkels{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;margin-top:2px}
 .winkels a{color:var(--water-45);text-decoration:none;margin-right:10px}
@@ -205,6 +211,7 @@ footer .mono{letter-spacing:.05em}
   <a href="#paklijst">Paklijst</a>
   <a href="#vertrek">Voor vertrek</a>
   <a href="#onderweg">Onderweg</a>
+  <a href="live.html" style="color:var(--baksteen)">Live →</a>
 </div></nav>
 
 <header class="hero"><div class="wrap">
@@ -239,6 +246,10 @@ footer .mono{letter-spacing:.05em}
     <div class="kicker">Hoe het gewicht verdeeld is</div>
     <p>Zaterdag 147 km, zondag 144 km, maandag 122 km. Twee zware dagen vooraan, een lichtere om mee af te sluiten — en dat is precies wat je wil, want maandag heb je een trein te halen. De pont valt zondagmiddag, ruim in het midden van je dag, dus die kan je niet mislopen door één keer te verslapen.</p>
   </div>
+  <div class="tip">
+    <div class="kicker">Onderweg</div>
+    <p>Open <a href="live.html"><strong>de live-pagina</strong></a> op je telefoon om je locatie te delen: die klapt elk punt dat je al voorbij bent samen, zodat je alleen ziet wat nog komt. Werkt volledig lokaal, niets gaat naar een server.</p>
+  </div>
 
   <!-- VRIJDAG -->
   <div class="dag">
@@ -266,6 +277,12 @@ footer .mono{letter-spacing:.05em}
     </div>
     <div class="dag-body">
       <p>Sprinter van Amsterdam Centraal naar Purmerend, 9 km naar het startpunt bij Fort bij Edam, en dan met de klok mee de hele Stelling van Amsterdam rond: Beemster, Zaanstreek, IJmuiden, Haarlem, de Haarlemmermeer, Uithoorn, Abcoude, en via Muiden naar Naarden. Je langste dag, maar ook de meest gevarieerde.</p>
+      <div id="kaartDag1" class="dag-kaart"></div>
+      <div class="kort">
+        <div><b>Lunch · km 91</b>Uithoorn — Het Spoorhuis of Geniet aan de Amstel</div>
+        <div><b>Trein heen</b>Amsterdam CS → Purmerend, 07:30 — <a href="#vervoer">tickets</a></div>
+        <div><b>Slapen · km 138,5</b>Naarden-Vesting — Bussummerstraat 35 — <a href="#slapen">details</a></div>
+      </div>
       <ul class="strip">
         <li class="big"><span class="km">trein</span><span class="naam">Amsterdam CS → Purmerend</span><div class="wat">Sprinter, ±17 minuten. Fietskaart Dal nodig; op zaterdag geldt het spitsverbod niet.</div></li>
         <li><span class="km">–9</span><span class="naam">Purmerend → Edam</span><div class="wat">Negen kilometer over rustige wegen. Je warmt op terwijl je naar het startpunt rijdt.</div></li>
@@ -299,6 +316,12 @@ footer .mono{letter-spacing:.05em}
     </div>
     <div class="dag-body">
       <p>De complete Nieuwe Hollandse Waterlinie in één dag: van Naarden tot de Biesbosch, met halverwege de pont over de Merwede. Vertrek na een vroeg ontbijt — je wil ruim voor de laatste afvaart in Gorinchem staan.</p>
+      <div id="kaartDag2" class="dag-kaart"></div>
+      <div class="kort">
+        <div><b>Lunch · km 223</b>Culemborg — Brownies&amp;downieS of Tante Zas &amp; Co</div>
+        <div><b>Pont · km 264</b>Gorinchem → Woudrichem, ±14:30 — <a href="#pont">details</a></div>
+        <div><b>Slapen · km 282</b>Fort Bakkerskil — Kildijk 143, Nieuwendijk — <a href="#slapen">details</a></div>
+      </div>
       <ul class="strip">
         <li class="big"><span class="km">138,5</span><span class="naam">Naarden</span><div class="wat">Ontbijt 07:00, wielen draaien 07:30.</div></li>
         <li><span class="km">163</span><span class="naam">Loosdrechtse Plassen</span><div class="wat">Via 's-Graveland. Rustige ochtend langs het water.</div></li>
@@ -335,6 +358,11 @@ footer .mono{letter-spacing:.05em}
       <div class="note">
         <div class="kicker">Harde deadline · 16:00</div>
         <p>Bij NS mag je fiets op werkdagen niet mee tussen 16:00 en 18:30. Zorg dat je uiterlijk 15:45 in de trein uit Bergen op Zoom zit, of je wacht tot half zeven. Met 122 km en vertrek om 08:00 sta je rond 14:30 op het perron — ruim een uur speling.</p>
+      </div>
+      <div id="kaartDag3" class="dag-kaart"></div>
+      <div class="kort">
+        <div><b>Lunch · km 339</b>Klundert — Gasterij 't Tolhuys of Grand Café Klunder</div>
+        <div><b>Harde deadline</b>Trein Bergen op Zoom om 15:45 — <a href="#vervoer">details</a></div>
       </div>
       <ul class="strip">
         <li class="big"><span class="km">282</span><span class="naam">Fort Bakkerskil</span><div class="wat">Ontbijt vanaf 07:30, wielen draaien 08:00.</div></li>
@@ -824,15 +852,24 @@ footer .mono{letter-spacing:.05em}
   bar.innerHTML=html;
 })();
 
-/* ---------------- route kaart ---------------- */
-(function(){
-  var kaartEl=document.getElementById('routeKaart');
+/* ---------------- route kaarten ---------------- */
+var DAGEN=[
+  {n:1,file:'gpx/dag1-edam-naarden.gpx',kleur:'#6BA3AA',label:'Dag 1 · Edam → Naarden'},
+  {n:2,file:'gpx/dag2-naarden-fort-bakkerskil.gpx',kleur:'#3F7F89',label:'Dag 2 · Naarden → Fort Bakkerskil'},
+  {n:3,file:'gpx/dag3-fort-bakkerskil-bergen-op-zoom.gpx',kleur:'#245C66',label:'Dag 3 · Fort Bakkerskil → Bergen op Zoom'}
+];
+function parseGpx(tekst){
+  var xml=new DOMParser().parseFromString(tekst,'application/xml');
+  var punten=xml.getElementsByTagName('trkpt');
+  var pts=[];
+  for(var i=0;i<punten.length;i++){
+    pts.push([parseFloat(punten[i].getAttribute('lat')),parseFloat(punten[i].getAttribute('lon'))]);
+  }
+  return pts;
+}
+function tekenKaart(elId,dagen,metToggle){
+  var kaartEl=document.getElementById(elId);
   if(!kaartEl || typeof L==='undefined') return;
-  var DAGEN=[
-    {n:1,file:'gpx/dag1-edam-naarden.gpx',kleur:'#6BA3AA',label:'Dag 1 · Edam → Naarden'},
-    {n:2,file:'gpx/dag2-naarden-fort-bakkerskil.gpx',kleur:'#3F7F89',label:'Dag 2 · Naarden → Fort Bakkerskil'},
-    {n:3,file:'gpx/dag3-fort-bakkerskil-bergen-op-zoom.gpx',kleur:'#245C66',label:'Dag 3 · Fort Bakkerskil → Bergen op Zoom'}
-  ];
   var map=L.map(kaartEl,{scrollWheelZoom:false});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
@@ -848,18 +885,8 @@ footer .mono{letter-spacing:.05em}
   window.addEventListener('load',herpas);
   window.addEventListener('resize',herpas);
 
-  function parseGpx(tekst){
-    var xml=new DOMParser().parseFromString(tekst,'application/xml');
-    var punten=xml.getElementsByTagName('trkpt');
-    var pts=[];
-    for(var i=0;i<punten.length;i++){
-      pts.push([parseFloat(punten[i].getAttribute('lat')),parseFloat(punten[i].getAttribute('lon'))]);
-    }
-    return pts;
-  }
-
   var lagen={};
-  Promise.all(DAGEN.map(function(d){
+  Promise.all(dagen.map(function(d){
     return fetch(d.file).then(function(r){return r.text();}).then(function(tekst){
       var pts=parseGpx(tekst);
       if(!pts.length) return;
@@ -875,17 +902,24 @@ footer .mono{letter-spacing:.05em}
     }).catch(function(){});
   })).then(herpas);
 
-  [1,2,3].forEach(function(n){
-    var btn=document.getElementById('kaartD'+n);
-    if(!btn) return;
-    btn.addEventListener('click',function(){
-      var laag=lagen[n];
-      if(!laag) return;
-      if(map.hasLayer(laag)){ map.removeLayer(laag); btn.classList.remove('on'); }
-      else { laag.addTo(map); btn.classList.add('on'); }
+  if(metToggle){
+    [1,2,3].forEach(function(n){
+      var btn=document.getElementById('kaartD'+n);
+      if(!btn) return;
+      btn.addEventListener('click',function(){
+        var laag=lagen[n];
+        if(!laag) return;
+        if(map.hasLayer(laag)){ map.removeLayer(laag); btn.classList.remove('on'); }
+        else { laag.addTo(map); btn.classList.add('on'); }
+      });
     });
-  });
-})();
+  }
+  return map;
+}
+tekenKaart('routeKaart',DAGEN,true);
+tekenKaart('kaartDag1',[DAGEN[0]],false);
+tekenKaart('kaartDag2',[DAGEN[1]],false);
+tekenKaart('kaartDag3',[DAGEN[2]],false);
 
 /* ---------------- data ---------------- */
 var TASSEN=[

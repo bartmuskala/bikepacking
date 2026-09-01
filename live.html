@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live · LF Waterlinieroute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+  --water:#0D2B36; --water-70:rgba(13,43,54,.70); --water-45:rgba(13,43,54,.45);
+  --inundatie:#3F7F89; --inundatie-licht:#A9C8C7;
+  --polder:#DBE3DD; --kaart:#F5F8F4;
+  --baksteen:#A03A2B; --oker:#B5872A;
+  --lijn:rgba(13,43,54,.16); --lijn-sterk:rgba(13,43,54,.30);
+  --display:"Zilla Slab",Georgia,serif;
+  --body:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--polder);color:var(--water);font-family:var(--body);
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--inundatie);text-underline-offset:3px}
+a:hover{color:var(--baksteen)}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+
+nav.top{position:sticky;top:0;z-index:50;background:rgba(219,227,221,.93);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--lijn-sterk)}
+nav.top .wrap{display:flex;gap:14px;align-items:center;height:52px}
+nav.top .brand{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--water-45)}
+nav.top a{font-size:13.5px;font-weight:500;color:var(--inundatie);text-decoration:none;margin-left:auto}
+
+header.hero{padding:32px 0 24px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--inundatie)}
+h1{font-size:clamp(28px,7vw,40px);letter-spacing:-.02em;margin:10px 0 8px}
+.lede{font-size:15.5px;color:var(--water-70);max-width:56ch}
+
+.card{background:var(--kaart);border:1px solid var(--lijn);padding:20px;margin-bottom:16px}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--inundatie);margin-bottom:8px}
+p{margin:0 0 10px}p:last-child{margin-bottom:0}
+
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.btn{font-family:var(--body);font-size:13.5px;font-weight:500;padding:10px 16px;border-radius:3px;
+  border:1px solid var(--lijn-sterk);background:transparent;color:var(--water-70);cursor:pointer}
+.btn:hover{border-color:var(--water);color:var(--water)}
+.btn.on{background:var(--water);border-color:var(--water);color:var(--kaart)}
+.btn.groot{padding:14px 22px;font-size:15px;background:var(--baksteen);border-color:var(--baksteen);color:#fff}
+.btn.groot:hover{background:#84291d;border-color:#84291d;color:#fff}
+.btn.stop{background:transparent;border-color:var(--lijn-sterk);color:var(--water-70)}
+.kaart-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:1px}
+
+.status-bar{font-family:var(--mono);font-size:13px;color:var(--water-45);display:flex;flex-wrap:wrap;
+  gap:6px 20px;margin-bottom:6px}
+.status-bar b{color:var(--water);font-size:15px}
+.status-bar.uit{color:var(--water-45)}
+.status-bar.fout{color:var(--baksteen)}
+
+#liveKaart{height:340px;background:var(--polder);border:1px solid var(--lijn)}
+.live-dot-wrap{position:relative;width:16px;height:16px}
+.live-dot{position:absolute;inset:0;border-radius:50%;background:var(--baksteen);border:2px solid #fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.live-dot:before{content:"";position:absolute;inset:-9px;border-radius:50%;background:rgba(160,58,43,.28);
+  animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.35);opacity:1}100%{transform:scale(2.1);opacity:0}}
+
+.strip{list-style:none;margin:14px 0 0;padding:0;position:relative}
+.strip:before{content:"";position:absolute;left:52px;top:8px;bottom:8px;width:2px;background:var(--inundatie-licht)}
+.strip li{position:relative;padding:8px 0 8px 72px;min-height:26px;transition:opacity .2s}
+.strip li .km{position:absolute;left:0;top:9px;width:42px;text-align:right;
+  font-family:var(--mono);font-size:11px;color:var(--water-45)}
+.strip li:after{content:"";position:absolute;left:48px;top:14px;width:9px;height:9px;border-radius:50%;
+  background:var(--kaart);border:2px solid var(--inundatie)}
+.strip .naam{font-weight:600;font-size:14.5px}
+.strip .wat{color:var(--water-70);font-size:13px;margin-top:2px}
+.strip li.passed{opacity:.4;padding:4px 0 4px 72px;min-height:0}
+.strip li.passed:after{background:var(--inundatie);border-color:var(--inundatie)}
+.strip li.passed .wat{display:none}
+.strip li.passed .naam{font-weight:400;font-size:13px}
+.strip li.next{background:rgba(160,58,43,.06)}
+.strip li.next:after{width:14px;height:14px;left:45px;top:11px;border-width:3px;border-color:var(--baksteen);background:var(--baksteen)}
+.strip li.next .naam{color:var(--baksteen)}
+
+.note{background:rgba(63,127,137,.09);border-left:3px solid var(--inundatie);padding:14px 16px;margin:0 0 16px;font-size:13.5px}
+footer{padding:30px 0 50px;font-size:12.5px;color:var(--water-45)}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap">
+  <span class="brand">LF Waterlinie · live</span>
+  <a href="index.html">← Terug naar de hoofdpagina</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">Onderweg</div>
+  <h1>Waar ben ik?</h1>
+  <p class="lede">Deelt je locatie <strong>alleen in deze browser</strong> — er gaat niets naar een server. Zodra je deelt, vergelijkt de pagina je positie met de GPX van de dag en klapt alles wat al voorbij is samen, zodat je alleen ziet wat nog komt.</p>
+</div></header>
+
+<div class="wrap">
+  <div class="note" id="privacyNote">Je locatie blijft lokaal op je toestel en wordt nergens naartoe gestuurd. Sluit je dit tabblad, dan is alles weg.</div>
+
+  <div class="card">
+    <div class="tools" style="margin-bottom:0">
+      <button class="btn groot" id="startBtn">Start locatie delen</button>
+      <button class="btn stop" id="stopBtn" style="display:none">Stop met delen</button>
+      <button class="btn" id="centreerBtn" style="display:none">Centreer op mij</button>
+    </div>
+    <div class="status-bar uit" id="statusBar" style="margin-top:14px">Nog niet gestart.</div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Dag</div>
+    <div class="tools" style="margin-bottom:0">
+      <button class="btn" data-dag="1" id="dagBtn1"><span class="kaart-dot" style="background:#6BA3AA"></span>Dag 1 · Edam → Naarden</button>
+      <button class="btn" data-dag="2" id="dagBtn2"><span class="kaart-dot" style="background:#3F7F89"></span>Dag 2 · Naarden → Bakkerskil</button>
+      <button class="btn" data-dag="3" id="dagBtn3"><span class="kaart-dot" style="background:#245C66"></span>Dag 3 · Bakkerskil → Bergen op Zoom</button>
+    </div>
+    <p style="font-size:12.5px;color:var(--water-45);margin-top:10px">Wordt automatisch gekozen zodra je dicht bij een van de drie tracks bent. Je kan het altijd zelf overschrijven.</p>
+  </div>
+
+  <div class="card">
+    <div id="liveKaart"></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Wat nog komt</div>
+    <ul class="strip" id="puntenView"></ul>
+  </div>
+</div>
+
+<footer><div class="wrap">
+  <p class="mono">LF WATERLINIEROUTE · LIVE VOORTGANG · WERKT VOLLEDIG LOKAAL, GEEN SERVER</p>
+</div></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var DAGSTART={1:0,2:138.5,3:282};
+var ROUTE={
+  1:{label:'Dag 1 · Edam → Naarden',file:'gpx/dag1-edam-naarden.gpx',kleur:'#6BA3AA',totaal:138.5,punten:[
+    {km:0,naam:'Fort bij Edam'},{km:15,naam:'Purmerend'},{km:36,naam:'Uitgeest'},
+    {km:45,naam:'IJmuiden'},{km:57,naam:'Spaarndam'},{km:64,naam:'Haarlem'},
+    {km:91,naam:'Uithoorn · Fort aan de Drecht',wat:'Lunchstop'},{km:108,naam:'Abcoude'},
+    {km:125,naam:'Weesp'},{km:129,naam:'Muiden · Muiderslot'},
+    {km:138.5,naam:'Naarden-Vesting',wat:'Overnachting'}
+  ]},
+  2:{label:'Dag 2 · Naarden → Fort Bakkerskil',file:'gpx/dag2-naarden-fort-bakkerskil.gpx',kleur:'#3F7F89',totaal:143.5,punten:[
+    {km:138.5,naam:'Naarden'},{km:163,naam:'Loosdrechtse Plassen'},{km:175,naam:'Maarssen · de Vecht'},
+    {km:186,naam:'Utrecht · Fort aan de Klop'},{km:201,naam:'Fort bij Vechten'},
+    {km:209,naam:'Nieuwegein · Plofsluis',wat:'Omleiding — volg de borden'},
+    {km:223,naam:'Culemborg',wat:'Lunchstop'},{km:247,naam:'Leerdam'},{km:260,naam:'Fort Vuren'},
+    {km:264,naam:'Pont Gorinchem → Woudrichem',wat:'De enige pont'},{km:267,naam:'Woudrichem'},
+    {km:276,naam:'Werkendam'},{km:282,naam:'Fort Bakkerskil, Nieuwendijk',wat:'Overnachting'}
+  ]},
+  3:{label:'Dag 3 · Fort Bakkerskil → Bergen op Zoom',file:'gpx/dag3-fort-bakkerskil-bergen-op-zoom.gpx',kleur:'#245C66',totaal:122.5,punten:[
+    {km:282,naam:'Fort Bakkerskil'},{km:291,naam:'Keizersveerbrug'},{km:297,naam:'Geertruidenberg'},
+    {km:318,naam:'Terheijden'},{km:339,naam:'Klundert',wat:'Lunchstop'},{km:348,naam:'Willemstad'},
+    {km:358,naam:'Fort Sabina'},{km:380,naam:'Steenbergen'},{km:398,naam:'Fort de Roovere, Halsteren'},
+    {km:404.5,naam:'Station Bergen op Zoom',wat:'Trein, deadline 15:45'}
+  ]}
+};
+Object.keys(ROUTE).forEach(function(n){
+  var start=DAGSTART[n];
+  ROUTE[n].punten.forEach(function(p){ p.rel=Math.round((p.km-start)*10)/10; });
+});
+
+function haversineKm(a,b){
+  var R=6371, dLat=(b[0]-a[0])*Math.PI/180, dLon=(b[1]-a[1])*Math.PI/180;
+  var s=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
+  return R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));
+}
+function parseGpx(tekst){
+  var xml=new DOMParser().parseFromString(tekst,'application/xml');
+  var punten=xml.getElementsByTagName('trkpt'), pts=[];
+  for(var i=0;i<punten.length;i++) pts.push([parseFloat(punten[i].getAttribute('lat')),parseFloat(punten[i].getAttribute('lon'))]);
+  return pts;
+}
+function cumAfstand(pts){
+  var cum=[0];
+  for(var i=1;i<pts.length;i++) cum.push(cum[i-1]+haversineKm(pts[i-1],pts[i]));
+  return cum;
+}
+function dichtsteIndex(pts,pos){
+  var beste=0, kort=Infinity;
+  for(var i=0;i<pts.length;i++){
+    var d=haversineKm(pts[i],pos);
+    if(d<kort){ kort=d; beste=i; }
+  }
+  return {i:beste,afstand:kort};
+}
+
+var map=L.map('liveKaart',{scrollWheelZoom:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:18,attribution:'&copy; OpenStreetMap'
+}).addTo(map);
+map.setView([52.1,4.9],8);
+
+var geladen={}, huidigeDag=null, lijnLaag=null, marker=null, volgen=false, watchId=null;
+
+function laadDag(n){
+  if(geladen[n]) return Promise.resolve(geladen[n]);
+  return fetch(ROUTE[n].file).then(function(r){return r.text();}).then(function(t){
+    var pts=parseGpx(t);
+    var data={pts:pts,cum:cumAfstand(pts)};
+    geladen[n]=data;
+    return data;
+  });
+}
+
+function toonDag(n){
+  huidigeDag=n;
+  [1,2,3].forEach(function(m){
+    document.getElementById('dagBtn'+m).classList.toggle('on',m==n);
+  });
+  laadDag(n).then(function(data){
+    if(lijnLaag) map.removeLayer(lijnLaag);
+    lijnLaag=L.polyline(data.pts,{color:ROUTE[n].kleur,weight:4,opacity:0.9}).addTo(map);
+    map.invalidateSize();
+    map.fitBounds(lijnLaag.getBounds(),{padding:[24,24]});
+    renderPunten(0);
+  });
+}
+[1,2,3].forEach(function(n){
+  document.getElementById('dagBtn'+n).addEventListener('click',function(){ toonDag(n); });
+});
+
+function renderPunten(progressKm){
+  var route=ROUTE[huidigeDag];
+  if(!route) return;
+  var eerstvolgendeGezet=false;
+  var html=route.punten.map(function(p){
+    var passed = p.rel <= progressKm-0.3;
+    var isNext = !passed && !eerstvolgendeGezet;
+    if(isNext) eerstvolgendeGezet=true;
+    return '<li class="'+(passed?'passed':'')+(isNext?' next':'')+'">'+
+      '<span class="km">'+p.km+'</span><span class="naam">'+p.naam+'</span>'+
+      (p.wat?'<div class="wat">'+p.wat+'</div>':'')+'</li>';
+  }).join('');
+  document.getElementById('puntenView').innerHTML=html;
+}
+
+function statusZet(tekst,klasse){
+  var el=document.getElementById('statusBar');
+  el.className='status-bar'+(klasse?' '+klasse:'');
+  el.innerHTML=tekst;
+}
+
+function bestDagVoorPositie(pos){
+  return Promise.all([1,2,3].map(function(n){ return laadDag(n).then(function(d){return {n:n,d:d};}); }))
+  .then(function(lijst){
+    var beste=null;
+    lijst.forEach(function(x){
+      var r=dichtsteIndex(x.d.pts,pos);
+      if(!beste || r.afstand<beste.afstand) beste={n:x.n,afstand:r.afstand};
+    });
+    return beste;
+  });
+}
+
+var eersteFix=true;
+function opPositie(gpsPos){
+  var pos=[gpsPos.coords.latitude,gpsPos.coords.longitude];
+  var nu=new Date();
+  var tijd=('0'+nu.getHours()).slice(-2)+':'+('0'+nu.getMinutes()).slice(-2)+':'+('0'+nu.getSeconds()).slice(-2);
+
+  function verwerk(){
+    var data=geladen[huidigeDag];
+    if(!data) return;
+    var r=dichtsteIndex(data.pts,pos);
+    var progressKm=data.cum[r.i];
+    var totaal=ROUTE[huidigeDag].totaal;
+    statusZet('<b>'+ROUTE[huidigeDag].label+'</b> · km '+progressKm.toFixed(1)+' van '+totaal+
+      ' · nog '+Math.max(0,totaal-progressKm).toFixed(1)+' km · bijgewerkt '+tijd+
+      (r.afstand>0.3?' · <span style="color:var(--baksteen)">'+Math.round(r.afstand*1000)+' m van de route</span>':''));
+    renderPunten(progressKm);
+    if(marker){
+      marker.setLatLng(pos);
+    }else{
+      var icon=L.divIcon({className:'',html:'<div class="live-dot-wrap"><div class="live-dot"></div></div>',iconSize:[16,16],iconAnchor:[8,8]});
+      marker=L.marker(pos,{icon:icon}).addTo(map);
+    }
+    if(volgen) map.panTo(pos);
+  }
+
+  if(eersteFix){
+    eersteFix=false;
+    if(huidigeDag){ verwerk(); return; }
+    statusZet('Dag herkennen op basis van je locatie…');
+    bestDagVoorPositie(pos).then(function(beste){
+      if(beste && beste.afstand<3){ toonDag(beste.n); }
+      else { toonDag(1); }
+      setTimeout(verwerk,300);
+    });
+    return;
+  }
+  if(!huidigeDag) return;
+  verwerk();
+}
+
+function opFout(err){
+  statusZet('Locatie ophalen mislukt: '+err.message+'. Check of locatietoegang is toegestaan voor deze pagina.','fout');
+}
+
+document.getElementById('startBtn').addEventListener('click',function(){
+  if(!navigator.geolocation){ statusZet('Deze browser ondersteunt geen locatie.','fout'); return; }
+  volgen=true;
+  eersteFix=true;
+  watchId=navigator.geolocation.watchPosition(opPositie,opFout,{enableHighAccuracy:true,maximumAge:5000,timeout:20000});
+  document.getElementById('startBtn').style.display='none';
+  document.getElementById('stopBtn').style.display='';
+  document.getElementById('centreerBtn').style.display='';
+  statusZet('Locatie ophalen…');
+});
+document.getElementById('stopBtn').addEventListener('click',function(){
+  if(watchId!=null) navigator.geolocation.clearWatch(watchId);
+  volgen=false;
+  document.getElementById('startBtn').style.display='';
+  document.getElementById('stopBtn').style.display='none';
+  document.getElementById('centreerBtn').style.display='none';
+  statusZet('Gestopt met delen.','uit');
+});
+document.getElementById('centreerBtn').addEventListener('click',function(){
+  if(marker) map.panTo(marker.getLatLng());
+});
+
+toonDag(1);
+</script>
+</body>
+</html>
