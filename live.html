@@ -72,7 +72,7 @@ p{margin:0 0 10px}p:last-child{margin-bottom:0}
 .strip li{position:relative;padding:8px 0 8px 72px;min-height:26px;transition:opacity .2s}
 .strip li .km{position:absolute;left:0;top:9px;width:42px;text-align:right;
   font-family:var(--mono);font-size:11px;color:var(--water-45)}
-.strip li:after{content:"";position:absolute;left:48px;top:14px;width:9px;height:9px;border-radius:50%;
+.strip li:after{content:"";position:absolute;left:48.5px;top:14px;width:9px;height:9px;border-radius:50%;
   background:var(--kaart);border:2px solid var(--inundatie)}
 .strip .naam{font-weight:600;font-size:14.5px}
 .strip .wat{color:var(--water-70);font-size:13px;margin-top:2px}
@@ -81,8 +81,10 @@ p{margin:0 0 10px}p:last-child{margin-bottom:0}
 .strip li.passed .wat{display:none}
 .strip li.passed .naam{font-weight:400;font-size:13px}
 .strip li.next{background:rgba(160,58,43,.06)}
-.strip li.next:after{width:14px;height:14px;left:45px;top:11px;border-width:3px;border-color:var(--baksteen);background:var(--baksteen)}
+.strip li.next:after{width:14px;height:14px;left:46px;top:11px;border-width:3px;border-color:var(--baksteen);background:var(--baksteen)}
 .strip li.next .naam{color:var(--baksteen)}
+.strip .eta{font-family:var(--mono);font-size:11.5px;color:var(--water-45);margin-left:6px}
+.strip li.next .eta{color:var(--baksteen)}
 
 .note{background:rgba(63,127,137,.09);border-left:3px solid var(--inundatie);padding:14px 16px;margin:0 0 16px;font-size:13.5px}
 footer{padding:30px 0 50px;font-size:12.5px;color:var(--water-45)}
@@ -144,7 +146,7 @@ var ROUTE={
   1:{label:'Dag 1 · Edam → Naarden',file:'gpx/dag1-edam-naarden.gpx',kleur:'#6BA3AA',totaal:138.5,punten:[
     {km:0,naam:'Fort bij Edam'},{km:15,naam:'Purmerend'},{km:36,naam:'Uitgeest'},
     {km:45,naam:'IJmuiden'},{km:57,naam:'Spaarndam'},{km:64,naam:'Haarlem'},
-    {km:91,naam:'Uithoorn · Fort aan de Drecht',wat:'Lunchstop'},{km:108,naam:'Abcoude'},
+    {km:91,naam:'Uithoorn · Fort aan de Drecht',wat:'Lunch — Het Spoorhuis of Geniet aan de Amstel'},{km:108,naam:'Abcoude'},
     {km:125,naam:'Weesp'},{km:129,naam:'Muiden · Muiderslot'},
     {km:138.5,naam:'Naarden-Vesting',wat:'Overnachting'}
   ]},
@@ -152,13 +154,13 @@ var ROUTE={
     {km:138.5,naam:'Naarden'},{km:163,naam:'Loosdrechtse Plassen'},{km:175,naam:'Maarssen · de Vecht'},
     {km:186,naam:'Utrecht · Fort aan de Klop'},{km:201,naam:'Fort bij Vechten'},
     {km:209,naam:'Nieuwegein · Plofsluis',wat:'Omleiding — volg de borden'},
-    {km:223,naam:'Culemborg',wat:'Lunchstop'},{km:247,naam:'Leerdam'},{km:260,naam:'Fort Vuren'},
+    {km:223,naam:'Culemborg',wat:'Lunch — Brownies&downieS of Tante Zas & Co'},{km:247,naam:'Leerdam'},{km:260,naam:'Fort Vuren'},
     {km:264,naam:'Pont Gorinchem → Woudrichem',wat:'De enige pont'},{km:267,naam:'Woudrichem'},
     {km:276,naam:'Werkendam'},{km:282,naam:'Fort Bakkerskil, Nieuwendijk',wat:'Overnachting'}
   ]},
   3:{label:'Dag 3 · Fort Bakkerskil → Bergen op Zoom',file:'gpx/dag3-fort-bakkerskil-bergen-op-zoom.gpx',kleur:'#245C66',totaal:122.5,punten:[
     {km:282,naam:'Fort Bakkerskil'},{km:291,naam:'Keizersveerbrug'},{km:297,naam:'Geertruidenberg'},
-    {km:318,naam:'Terheijden'},{km:339,naam:'Klundert',wat:'Lunchstop'},{km:348,naam:'Willemstad'},
+    {km:318,naam:'Terheijden'},{km:339,naam:'Klundert',wat:"Lunch — 't Tolhuys of Grand Café Klunder"},{km:348,naam:'Willemstad'},
     {km:358,naam:'Fort Sabina'},{km:380,naam:'Steenbergen'},{km:398,naam:'Fort de Roovere, Halsteren'},
     {km:404.5,naam:'Station Bergen op Zoom',wat:'Trein, deadline 15:45'}
   ]}
@@ -211,8 +213,10 @@ function laadDag(n){
   });
 }
 
+var sessie=null;
 function toonDag(n){
   huidigeDag=n;
+  sessie=null;
   [1,2,3].forEach(function(m){
     document.getElementById('dagBtn'+m).classList.toggle('on',m==n);
   });
@@ -224,11 +228,12 @@ function toonDag(n){
     renderPunten(0);
   });
 }
+function formatTijd(d){ return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }
 [1,2,3].forEach(function(n){
   document.getElementById('dagBtn'+n).addEventListener('click',function(){ toonDag(n); });
 });
 
-function renderPunten(progressKm){
+function renderPunten(progressKm,snelheid,nu){
   var route=ROUTE[huidigeDag];
   if(!route) return;
   var eerstvolgendeGezet=false;
@@ -236,8 +241,13 @@ function renderPunten(progressKm){
     var passed = p.rel <= progressKm-0.3;
     var isNext = !passed && !eerstvolgendeGezet;
     if(isNext) eerstvolgendeGezet=true;
+    var eta='';
+    if(!passed && snelheid && nu){
+      var verwacht=new Date(nu.getTime()+(p.rel-progressKm)/snelheid*3600000);
+      eta='<span class="eta">verwacht ~'+formatTijd(verwacht)+'</span>';
+    }
     return '<li class="'+(passed?'passed':'')+(isNext?' next':'')+'">'+
-      '<span class="km">'+p.km+'</span><span class="naam">'+p.naam+'</span>'+
+      '<span class="km">'+p.km+'</span><span class="naam">'+p.naam+'</span>'+eta+
       (p.wat?'<div class="wat">'+p.wat+'</div>':'')+'</li>';
   }).join('');
   document.getElementById('puntenView').innerHTML=html;
@@ -273,10 +283,23 @@ function opPositie(gpsPos){
     var r=dichtsteIndex(data.pts,pos);
     var progressKm=data.cum[r.i];
     var totaal=ROUTE[huidigeDag].totaal;
+
+    if(!sessie) sessie={tijd:nu,km:progressKm};
+    var verstrekenUur=(nu-sessie.tijd)/3600000;
+    var afgelegd=progressKm-sessie.km;
+    var snelheid=(verstrekenUur>(30/3600) && afgelegd>0.05) ? afgelegd/verstrekenUur : null;
+    var etaTekst;
+    if(snelheid){
+      var etaEind=new Date(nu.getTime()+Math.max(0,totaal-progressKm)/snelheid*3600000);
+      etaTekst=' · ⌀ '+snelheid.toFixed(1)+' km/u · aankomst ~'+formatTijd(etaEind);
+    }else{
+      etaTekst=' · snelheid wordt bepaald…';
+    }
+
     statusZet('<b>'+ROUTE[huidigeDag].label+'</b> · km '+progressKm.toFixed(1)+' van '+totaal+
-      ' · nog '+Math.max(0,totaal-progressKm).toFixed(1)+' km · bijgewerkt '+tijd+
+      ' · nog '+Math.max(0,totaal-progressKm).toFixed(1)+' km'+etaTekst+' · bijgewerkt '+tijd+
       (r.afstand>0.3?' · <span style="color:var(--baksteen)">'+Math.round(r.afstand*1000)+' m van de route</span>':''));
-    renderPunten(progressKm);
+    renderPunten(progressKm,snelheid,nu);
     if(marker){
       marker.setLatLng(pos);
     }else{
@@ -305,16 +328,20 @@ function opFout(err){
   statusZet('Locatie ophalen mislukt: '+err.message+'. Check of locatietoegang is toegestaan voor deze pagina.','fout');
 }
 
-document.getElementById('startBtn').addEventListener('click',function(){
+var GEDEELD_KEY='wl-live-gedeeld';
+function startDelen(){
   if(!navigator.geolocation){ statusZet('Deze browser ondersteunt geen locatie.','fout'); return; }
   volgen=true;
   eersteFix=true;
+  sessie=null;
   watchId=navigator.geolocation.watchPosition(opPositie,opFout,{enableHighAccuracy:true,maximumAge:5000,timeout:20000});
   document.getElementById('startBtn').style.display='none';
   document.getElementById('stopBtn').style.display='';
   document.getElementById('centreerBtn').style.display='';
   statusZet('Locatie ophalen…');
-});
+  try{ localStorage.setItem(GEDEELD_KEY,'1'); }catch(e){}
+}
+document.getElementById('startBtn').addEventListener('click',startDelen);
 document.getElementById('stopBtn').addEventListener('click',function(){
   if(watchId!=null) navigator.geolocation.clearWatch(watchId);
   volgen=false;
@@ -328,6 +355,19 @@ document.getElementById('centreerBtn').addEventListener('click',function(){
 });
 
 toonDag(1);
+
+(function(){
+  var eerderGedeeld=false;
+  try{ eerderGedeeld=localStorage.getItem(GEDEELD_KEY)==='1'; }catch(e){}
+  if(!eerderGedeeld) return;
+  if(navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({name:'geolocation'}).then(function(status){
+      if(status.state==='granted') startDelen();
+    }).catch(function(){ startDelen(); });
+  }else{
+    startDelen();
+  }
+})();
 </script>
 </body>
 </html>
