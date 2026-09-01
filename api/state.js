@@ -1,4 +1,4 @@
-import { put, list } from '@vercel/blob';
+import { put, get } from '@vercel/blob';
 
 // Slaat de stand van de paklijst op in een Vercel Blob-store.
 // GET  /api/state?key=abc123   -> { ok:true, state:{...} }
@@ -32,14 +32,12 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const { blobs } = await list({ prefix: pathname, limit: 1 });
-      if (!blobs.length) return res.status(200).json({ ok: true, state: null });
-      const r = await fetch(blobs[0].url + '?cache=0', {
-        cache: 'no-store',
-        headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` }
-      });
-      if (!r.ok) return res.status(200).json({ ok: true, state: null });
-      return res.status(200).json({ ok: true, state: await r.json() });
+      const result = await get(pathname, { access: 'private', useCache: false });
+      if (!result || result.statusCode !== 200) {
+        return res.status(200).json({ ok: true, state: null });
+      }
+      const tekst = await new Response(result.stream).text();
+      return res.status(200).json({ ok: true, state: JSON.parse(tekst) });
     }
 
     if (req.method === 'POST') {
