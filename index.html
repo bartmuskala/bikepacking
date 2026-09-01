@@ -902,18 +902,89 @@ var TODOCAT={nu:'Nu meteen — dit is schaars',week:'Week ervoor — fiets en ma
 var KEY='waterlinie-2026-v1';
 var state={check:{},koop:{}};
 
-/* Twee lagen, in volgorde van voorkeur:
-   1. window.storage  — server-side bij Claude, dus ook op je andere toestellen
-   2. overzetcode     — handmatig kopiëren/plakken, werkt altijd en overal        */
+/* Vier lagen, in volgorde van voorkeur:
+   1. /api/state      — Vercel Blob, echte sync tussen al je toestellen
+   2. window.storage  — server-side bij Claude
+   3. de browser zelf — blijft staan op dit toestel
+   4. overzetcode     — handmatig kopiëren/plakken, werkt altijd en overal        */
+var API='/api/state';
+var server=false;            /* wordt true zodra /api/state antwoordt */
+var SLEUTELKEY='waterlinie-sleutel';
+
+function maakSleutel(){
+  var s='';
+  var alfabet='abcdefghijklmnopqrstuvwxyz0123456789';
+  var arr=new Uint8Array(16);
+  if(window.crypto && window.crypto.getRandomValues){ window.crypto.getRandomValues(arr); }
+  else { for(var i=0;i<16;i++) arr[i]=Math.floor(Math.random()*256); }
+  for(var j=0;j<16;j++) s+=alfabet[arr[j]%36];
+  return s;
+}
+function haalSleutel(){
+  var uitUrl=(location.hash||'').replace(/^#/,'').trim();
+  if(/^[a-z0-9]{8,40}$/.test(uitUrl)){ zetSleutel(uitUrl); return uitUrl; }
+  var k=null;
+  try{ k=window.localStorage.getItem(SLEUTELKEY); }catch(e){}
+  if(!/^[a-z0-9]{8,40}$/.test(k||'')){ k=maakSleutel(); zetSleutel(k); }
+  return k;
+}
+function zetSleutel(k){ try{ window.localStorage.setItem(SLEUTELKEY,k); }catch(e){} }
+var sleutel=null;
+
+async function serverLees(){
+  try{
+    var r=await fetch(API+'?key='+encodeURIComponent(sleutel),{cache:'no-store'});
+    if(!r.ok) return null;
+    var d=await r.json();
+    if(!d||!d.ok) return null;
+    server=true;
+    return d.state;
+  }catch(e){ return null; }
+}
+async function serverSchrijf(){
+  if(!server) return false;
+  try{
+    var r=await fetch(API+'?key='+encodeURIComponent(sleutel),{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({check:state.check,koop:state.koop})});
+    var d=await r.json();
+    return !!(r.ok && d && d.ok);
+  }catch(e){ return false; }
+}
+
 var cloud=(typeof window!=='undefined' && window.storage && typeof window.storage.get==='function');
+var lokaal=(function(){
+  try{ window.localStorage.setItem('__wl','1'); window.localStorage.removeItem('__wl'); return true; }
+  catch(e){ return false; }
+})();
 var laatsteFout=null;
 
+function lokaalLees(){
+  if(!lokaal) return null;
+  try{ var v=window.localStorage.getItem(KEY); return v?JSON.parse(v):null; }catch(e){ return null; }
+}
+function lokaalSchrijf(){
+  if(!lokaal) return;
+  try{ window.localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){}
+}
+
 async function load(){
-  if(!cloud) return;
-  try{
-    var r=await window.storage.get(KEY);
-    if(r&&r.value){var d=JSON.parse(r.value);state.check=d.check||{};state.koop=d.koop||{};}
-  }catch(e){ /* nog niets bewaard: geen fout */ }
+  sleutel=haalSleutel();
+  var srv=await serverLees();
+  if(srv){ state.check=srv.check||{}; state.koop=srv.koop||{}; return; }
+  if(server){ /* store bereikbaar maar nog leeg: neem wat lokaal staat mee omhoog */
+    var l0=lokaalLees();
+    if(l0){ state.check=l0.check||{}; state.koop=l0.koop||{}; serverSchrijf(); }
+    return;
+  }
+  if(cloud){
+    try{
+      var r=await window.storage.get(KEY);
+      if(r&&r.value){var d=JSON.parse(r.value);state.check=d.check||{};state.koop=d.koop||{};return;}
+    }catch(e){ /* nog niets bewaard: geen fout */ }
+  }
+  var l=lokaalLees();
+  if(l){ state.check=l.check||{}; state.koop=l.koop||{}; }
 }
 
 var saveTimer=null, bezig=false;
@@ -921,6 +992,14 @@ function save(){
   clearTimeout(saveTimer);
   saveTimer=setTimeout(function(){
     renderCode();
+    lokaalSchrijf();
+    if(server){
+      bezig=true; renderStatus();
+      serverSchrijf().then(function(ok){
+        bezig=false; laatsteFout=ok?null:'niet gesynchroniseerd'; renderStatus();
+      });
+      return;
+    }
     if(!cloud){ renderStatus(); return; }
     bezig=true; renderStatus();
     window.storage.set(KEY,JSON.stringify(state)).then(function(r){
@@ -931,22 +1010,28 @@ function save(){
   },300);
 }
 
+function tijd(){
+  var t=new Date();
+  return ('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2);
+}
 function renderStatus(){
   var el=document.getElementById('opslagStatus');
   if(!el) return;
   el.className='status';
-  if(!cloud){
-    el.className='status warn';
-    el.innerHTML='<b>Niet automatisch bewaard.</b> Open dit bestand in Claude, of gebruik de overzetcode onderaan deze sectie.';
-  }else if(bezig){
+  if(bezig){
     el.innerHTML='Bewaren…';
-  }else if(laatsteFout){
+  }else if(server && !laatsteFout){
+    el.innerHTML='<b>Gesynchroniseerd om '+tijd()+'.</b> Je vinkjes staan op al je toestellen die dezelfde sleutel gebruiken.';
+  }else if(server && laatsteFout){
     el.className='status warn';
-    el.innerHTML='<b>Bewaren mislukt.</b> Kopieer de overzetcode onderaan zodat je niets kwijtraakt.';
+    el.innerHTML='<b>Synchroniseren mislukt.</b> Lokaal wel bewaard — het lukt vanzelf weer zodra je online bent.';
+  }else if(cloud && !laatsteFout){
+    el.innerHTML='<b>Bewaard om '+tijd()+'.</b> Open deze pagina op een ander toestel en je vinkjes staan er ook.';
+  }else if(lokaal){
+    el.innerHTML='<b>Bewaard op dit toestel om '+tijd()+'.</b> Voor je telefoon: gebruik de overzetcode onderaan deze sectie.';
   }else{
-    var t=new Date();
-    var hh=('0'+t.getHours()).slice(-2), mm=('0'+t.getMinutes()).slice(-2);
-    el.innerHTML='<b>Bewaard om '+hh+':'+mm+'.</b> Open deze pagina op een ander toestel en je vinkjes staan er ook.';
+    el.className='status warn';
+    el.innerHTML='<b>Niet bewaard.</b> Deze browser laat opslag niet toe — kopieer de overzetcode voor je weggaat.';
   }
 }
 
@@ -973,7 +1058,8 @@ function leesCode(code){
 var codeVuil=false;
 function renderCode(){
   var ta=document.getElementById('syncCode');
-  if(ta && !codeVuil && document.activeElement!==ta) ta.value=maakCode();
+  if(!ta || codeVuil || document.activeElement===ta) return;
+  ta.value = server ? (location.origin+location.pathname+'#'+sleutel) : maakCode();
 }
 function syncMelding(tekst,fout){
   var el=document.getElementById('syncStatus');
@@ -1081,7 +1167,9 @@ document.getElementById('reset').addEventListener('click',function(){
 document.getElementById('syncCode').addEventListener('input',function(){ codeVuil=true; });
 document.getElementById('copyCode').addEventListener('click',function(){
   var ta=document.getElementById('syncCode');
-  codeVuil=false; ta.value=maakCode(); ta.select(); ta.setSelectionRange(0,99999);
+  codeVuil=false;
+  ta.value = server ? (location.origin+location.pathname+'#'+sleutel) : maakCode();
+  ta.select(); ta.setSelectionRange(0,99999);
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(ta.value).then(function(){syncMelding('Code gekopieerd.');},
       function(){syncMelding('Kopiëren lukte niet — selecteer de tekst zelf.',true);});
@@ -1091,6 +1179,19 @@ document.getElementById('copyCode').addEventListener('click',function(){
   }
 });
 document.getElementById('applyCode').addEventListener('click',function(){
+  if(server){
+    var inv=(document.getElementById('syncCode').value||'').trim();
+    var m=inv.match(/([a-z0-9]{8,40})\s*$/);
+    if(!m){ syncMelding('Geen geldige sleutel gevonden.',true); return; }
+    if(!confirm('Deze pagina koppelen aan sleutel '+m[1]+'? Je huidige vinkjes worden vervangen door wat daar staat.')) return;
+    sleutel=m[1]; zetSleutel(sleutel);
+    serverLees().then(function(d){
+      state={check:(d&&d.check)||{},koop:(d&&d.koop)||{}};
+      codeVuil=false; lokaalSchrijf(); renderAll(); renderStatus();
+      syncMelding('Gekoppeld.');
+    });
+    return;
+  }
   var nieuw=leesCode(document.getElementById('syncCode').value);
   if(!nieuw){ syncMelding('Die code herken ik niet.',true); return; }
   var n=Object.keys(nieuw.check).length+Object.keys(nieuw.koop).length;
@@ -1101,6 +1202,7 @@ document.getElementById('applyCode').addEventListener('click',function(){
 
 /* laatste redmiddel: bij het sluiten nog één keer wegschrijven */
 window.addEventListener('pagehide',function(){
+  lokaalSchrijf();
   if(cloud){ try{ window.storage.set(KEY,JSON.stringify(state)); }catch(e){} }
 });
 
@@ -1109,9 +1211,18 @@ window.addEventListener('pagehide',function(){
   renderAll();
   renderStatus();
   var u=document.getElementById('syncUitleg');
-  if(u && !cloud){
-    u.innerHTML='Deze pagina staat nu buiten Claude geopend, dus automatisch bewaren werkt hier niet. '+
-      'Open het bestand in Claude om je vinkjes automatisch te laten bewaren en synchroniseren — of werk hier verder en zet je stand met de code hieronder over.';
+  var ta=document.getElementById('syncCode');
+  if(server){
+    if(u) u.innerHTML='Je vinkjes worden bewaard op de server en lopen automatisch mee naar je andere toestellen. '+
+      'Om je telefoon te koppelen: open deze pagina daar met de link hieronder, of plak de sleutel in het vak en druk op koppelen.';
+    if(ta){ ta.value=location.origin+location.pathname+'#'+sleutel; ta.readOnly=false; }
+    var b1=document.getElementById('copyCode'), b2=document.getElementById('applyCode');
+    if(b1) b1.textContent='Kopieer koppellink';
+    if(b2) b2.textContent='Koppel aan deze sleutel';
+  }else if(u && !cloud){
+    u.innerHTML= lokaal
+      ? 'Alles wat je aanvinkt wordt bewaard in deze browser en staat er de volgende keer weer, ook na het sluiten van het tabblad. Wat deze versie niet kan, is automatisch overlopen naar een ander toestel.'
+      : 'Deze browser laat opslag niet toe (privémodus?). Je vinkjes verdwijnen zodra je de pagina sluit — kopieer de code hieronder als je iets wil bewaren.';
   }
 })();
 </script>
