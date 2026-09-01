@@ -2,8 +2,16 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LF Waterlinieroute · 19–21 september</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0D2B36">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Waterlinie">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -21,7 +29,8 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{margin:0;background:var(--polder);color:var(--water);font-family:var(--body);
+html,body{overflow-x:hidden;max-width:100%}
+body{margin:0;padding-top:56px;background:var(--polder);color:var(--water);font-family:var(--body);
   font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:var(--inundatie);text-underline-offset:3px;text-decoration-thickness:1px}
 a:hover{color:var(--baksteen)}
@@ -29,15 +38,31 @@ a:hover{color:var(--baksteen)}
 h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15;margin:0}
 .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
 
-nav.top{position:sticky;top:0;z-index:50;background:rgba(219,227,221,.93);
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(219,227,221,.93);
   backdrop-filter:blur(8px);border-bottom:1px solid var(--lijn-sterk)}
-nav.top .wrap{display:flex;gap:4px;align-items:center;overflow-x:auto;height:56px;scrollbar-width:none}
-nav.top .wrap::-webkit-scrollbar{display:none}
+nav.top .wrap{display:flex;gap:4px;align-items:center;height:56px}
 nav.top .brand{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--water-45);white-space:nowrap;margin-right:14px}
+  color:var(--water-45);white-space:nowrap;margin-right:14px;text-decoration:none}
+nav.top .brand:hover{color:var(--water)}
+.navLinks{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.navLinks::-webkit-scrollbar{display:none}
 nav.top a{font-size:13.5px;font-weight:500;color:var(--water-70);text-decoration:none;
   padding:6px 10px;border-radius:3px;white-space:nowrap}
 nav.top a:hover{background:rgba(13,43,54,.07);color:var(--water)}
+.menuBtn{display:none;flex:0 0 auto;background:none;border:none;font-size:22px;line-height:1;
+  color:var(--water);cursor:pointer;padding:6px 8px;margin-left:auto}
+.live-fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:55;
+  background:var(--baksteen);color:#fff;font-size:14px;font-weight:600;text-decoration:none;
+  padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(13,43,54,.32)}
+.live-fab:hover{background:#84291d;color:#fff}
+@media(max-width:640px){
+  .menuBtn{display:block}
+  .navLinks{display:none;position:fixed;top:56px;left:0;right:0;z-index:50;
+    flex-direction:column;align-items:stretch;gap:0;overflow-y:auto;max-height:calc(100vh - 56px);
+    background:var(--polder);border-bottom:1px solid var(--lijn-sterk)}
+  .navLinks.open{display:flex}
+  .navLinks a{padding:14px 22px;border-radius:0;border-bottom:1px solid var(--lijn)}
+}
 
 header.hero{padding:56px 0 40px;border-bottom:1px solid var(--lijn-sterk)}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--inundatie)}
@@ -178,7 +203,7 @@ td.t{font-family:var(--mono);white-space:nowrap;font-size:13px}
 .boodschappen ul{margin:8px 0 0;columns:2;column-gap:28px}
 @media(max-width:560px){.boodschappen ul{columns:1}}
 
-.status{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--water-45);white-space:nowrap}
+.status{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--water-45)}
 .status b{color:var(--inundatie);font-weight:600}
 .status.warn b{color:var(--baksteen)}
 footer{padding:44px 0 60px;font-size:13.5px;color:var(--water-45)}
@@ -191,6 +216,8 @@ footer .mono{letter-spacing:.05em}
   .linie-lab{font-size:9px}
   .strip:before{left:44px}.strip li{padding-left:64px}
   .strip li:after{left:40px}.strip li.big:after{left:37px}.strip li .km{width:36px}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  td.t{white-space:normal;word-break:break-word}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
@@ -198,18 +225,22 @@ footer .mono{letter-spacing:.05em}
 <body>
 
 <nav class="top"><div class="wrap">
-  <span class="brand">LF Waterlinie · 19–21 sep</span>
-  <a href="#draaiboek">Draaiboek</a>
-  <a href="#start">Naar Edam</a>
-  <a href="#route">Route</a>
-  <a href="#pont">Pont</a>
-  <a href="#slapen">Slapen</a>
-  <a href="#vervoer">Trein</a>
-  <a href="#paklijst">Paklijst</a>
-  <a href="#vertrek">Voor vertrek</a>
-  <a href="#onderweg">Onderweg</a>
-  <a href="live.html" style="color:var(--baksteen)">Live →</a>
+  <a href="index.html" class="brand">LF Waterlinie · 19–21 sep</a>
+  <div class="navLinks" id="navLinks">
+    <a href="#draaiboek">Draaiboek</a>
+    <a href="#start">Naar Edam</a>
+    <a href="#route">Route</a>
+    <a href="#pont">Pont</a>
+    <a href="#slapen">Slapen</a>
+    <a href="#vervoer">Trein</a>
+    <a href="#paklijst">Paklijst</a>
+    <a href="#vertrek">Voor vertrek</a>
+    <a href="#onderweg">Onderweg</a>
+  </div>
+  <button class="menuBtn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button>
 </div></nav>
+
+<a href="live.html" class="live-fab">Live →</a>
 
 <header class="hero"><div class="wrap">
   <div class="eyebrow">Eerste bikepacking trip · zaterdag 19 t/m maandag 21 september 2026</div>
@@ -814,6 +845,19 @@ footer .mono{letter-spacing:.05em}
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+/* ---------------- mobiel menu ---------------- */
+(function(){
+  var btn=document.getElementById('menuBtn'), links=document.getElementById('navLinks');
+  if(!btn || !links) return;
+  function sluit(){ links.classList.remove('open'); btn.textContent='☰'; btn.setAttribute('aria-expanded','false'); }
+  btn.addEventListener('click',function(){
+    var open=links.classList.toggle('open');
+    btn.textContent = open ? '✕' : '☰';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.addEventListener('click',function(e){ if(e.target.tagName==='A') sluit(); });
+})();
+
 /* ---------------- de linie bovenaan ---------------- */
 (function(){
   var TOT=405, bar=document.getElementById('linieBar');

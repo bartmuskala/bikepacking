@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0D2B36"/>
+  <path d="M0 340 Q128 300 256 340 T512 340 V512 H0 Z" fill="#3F7F89"/>
+  <path d="M0 400 Q128 366 256 400 T512 400 V512 H0 Z" fill="#245C66"/>
+  <text x="256" y="248" font-family="Georgia, 'Zilla Slab', serif" font-weight="700" font-size="220" fill="#F5F8F4" text-anchor="middle">LF</text>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "name": "LF Waterlinieroute",
+  "short_name": "Waterlinie",
+  "description": "Draaiboek, paklijst en live-tracking voor de LF Waterlinieroute",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#DBE3DD",
+  "theme_color": "#0D2B36",
+  "lang": "nl",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
