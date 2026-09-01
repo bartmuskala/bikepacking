@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LF Waterlinieroute · 19–21 september</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --water:#0D2B36; --water-70:rgba(13,43,54,.70); --water-45:rgba(13,43,54,.45);
+  --inundatie:#3F7F89; --inundatie-licht:#A9C8C7;
+  --polder:#DBE3DD; --kaart:#F5F8F4;
+  --baksteen:#A03A2B; --oker:#B5872A;
+  --lijn:rgba(13,43,54,.16); --lijn-sterk:rgba(13,43,54,.30);
+  --display:"Zilla Slab",Georgia,serif;
+  --body:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--polder);color:var(--water);font-family:var(--body);
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--inundatie);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{color:var(--baksteen)}
+:focus-visible{outline:2px solid var(--baksteen);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+nav.top{position:sticky;top:0;z-index:50;background:rgba(219,227,221,.93);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--lijn-sterk)}
+nav.top .wrap{display:flex;gap:4px;align-items:center;overflow-x:auto;height:56px;scrollbar-width:none}
+nav.top .wrap::-webkit-scrollbar{display:none}
+nav.top .brand{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--water-45);white-space:nowrap;margin-right:14px}
+nav.top a{font-size:13.5px;font-weight:500;color:var(--water-70);text-decoration:none;
+  padding:6px 10px;border-radius:3px;white-space:nowrap}
+nav.top a:hover{background:rgba(13,43,54,.07);color:var(--water)}
+
+header.hero{padding:56px 0 40px;border-bottom:1px solid var(--lijn-sterk)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--inundatie)}
+h1{font-size:clamp(36px,6.4vw,64px);font-weight:700;letter-spacing:-.02em;margin:14px 0 6px}
+h1 .thin{font-weight:400;color:var(--water-45)}
+.lede{font-size:18px;max-width:60ch;color:var(--water-70);margin:16px 0 0}
+
+.linie{margin:44px 0 8px}
+.linie-bar{position:relative;height:62px}
+.linie-track{position:absolute;top:26px;left:0;right:0;height:3px;background:var(--lijn-sterk)}
+.linie-day{position:absolute;top:24px;height:7px;border-radius:4px}
+.d1{background:#6BA3AA}.d2{background:#3F7F89}.d3{background:#245C66}
+.linie-pt{position:absolute;top:16px;width:1px;height:23px;background:var(--water-45)}
+.linie-lab{position:absolute;top:40px;transform:translateX(-50%);font-family:var(--mono);
+  font-size:10px;letter-spacing:.04em;color:var(--water-45);white-space:nowrap}
+.linie-node{position:absolute;top:20px;width:15px;height:15px;border-radius:50%;
+  background:var(--kaart);border:3px solid var(--water);transform:translateX(-50%)}
+.linie-node.pont{border-color:var(--baksteen);background:var(--baksteen);width:13px;height:13px;top:21px}
+.linie-top{position:absolute;top:-4px;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.05em;white-space:nowrap;color:var(--water)}
+.linie-legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:26px;font-family:var(--mono);
+  font-size:11px;color:var(--water-45);letter-spacing:.03em}
+.linie-legend span b{color:var(--water);font-weight:600}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;
+  background:var(--lijn-sterk);border:1px solid var(--lijn-sterk);margin:36px 0 0}
+.stat{background:var(--polder);padding:18px 16px}
+.stat .n{font-family:var(--mono);font-size:27px;font-weight:600;letter-spacing:-.02em;display:block}
+.stat .l{font-size:12px;color:var(--water-45);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+
+section{padding:68px 0;border-bottom:1px solid var(--lijn-sterk)}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:12px;color:var(--inundatie);letter-spacing:.12em}
+h2{font-size:clamp(27px,4vw,38px);letter-spacing:-.01em}
+.sec-intro{max-width:64ch;color:var(--water-70);margin:12px 0 34px}
+
+.card{background:var(--kaart);border:1px solid var(--lijn);padding:24px;margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+h3{font-size:21px;margin-bottom:8px}
+h4{font-size:15px;letter-spacing:.02em;margin-bottom:8px}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--inundatie);margin-bottom:6px}
+p{margin:0 0 12px}p:last-child{margin-bottom:0}
+ul{margin:0 0 12px;padding-left:19px}li{margin-bottom:5px}
+.mono{font-family:var(--mono)}
+.note{background:rgba(160,58,43,.07);border-left:3px solid var(--baksteen);padding:15px 18px;margin:16px 0}
+.note .kicker{color:var(--baksteen)}
+.tip{background:rgba(63,127,137,.09);border-left:3px solid var(--inundatie);padding:15px 18px;margin:16px 0}
+
+.dag{background:var(--kaart);border:1px solid var(--lijn);margin-bottom:20px}
+.dag-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;
+  padding:22px 24px;border-bottom:1px solid var(--lijn);flex-wrap:wrap}
+.dag-title{font-family:var(--display);font-size:25px;font-weight:600}
+.dag-sub{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--inundatie)}
+.dag-cijfers{display:flex;gap:22px;font-family:var(--mono);font-size:12px;color:var(--water-45)}
+.dag-cijfers b{display:block;font-size:19px;color:var(--water);font-weight:600}
+.dag-body{padding:6px 24px 24px}
+
+.strip{list-style:none;margin:16px 0 0;padding:0;position:relative}
+.strip:before{content:"";position:absolute;left:60px;top:10px;bottom:10px;width:2px;background:var(--inundatie-licht)}
+.strip li{position:relative;padding:7px 0 7px 82px;min-height:30px}
+.strip li .km{position:absolute;left:0;top:8px;width:48px;text-align:right;
+  font-family:var(--mono);font-size:11px;color:var(--water-45)}
+.strip li:after{content:"";position:absolute;left:56px;top:13px;width:10px;height:10px;border-radius:50%;
+  background:var(--kaart);border:2px solid var(--inundatie)}
+.strip li.big:after{width:16px;height:16px;left:53px;top:11px;border-width:3px;border-color:var(--water)}
+.strip li.pont:after{background:var(--baksteen);border-color:var(--baksteen)}
+.strip .naam{font-weight:600}
+.strip .wat{color:var(--water-70);font-size:14.5px}
+.badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 7px;border:1px solid var(--lijn-sterk);border-radius:2px;
+  color:var(--water-45);margin-left:6px;vertical-align:1px}
+.badge.rood{color:var(--baksteen);border-color:rgba(160,58,43,.4)}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:8px 0 4px}
+th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--water-45);font-weight:400;padding:0 10px 8px 0;border-bottom:1px solid var(--lijn-sterk)}
+td{padding:10px 10px 10px 0;border-bottom:1px solid var(--lijn);vertical-align:top}
+td.t{font-family:var(--mono);white-space:nowrap;font-size:13px}
+
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:22px}
+.btn{font-family:var(--body);font-size:13px;font-weight:500;padding:8px 14px;border-radius:3px;
+  border:1px solid var(--lijn-sterk);background:transparent;color:var(--water-70);cursor:pointer}
+.btn:hover{border-color:var(--water);color:var(--water)}
+.btn.on{background:var(--water);border-color:var(--water);color:var(--kaart)}
+.meter{font-family:var(--mono);font-size:12px;color:var(--water-45);margin-left:auto}
+.meter b{color:var(--water)}
+
+.groep{background:var(--kaart);border:1px solid var(--lijn);margin-bottom:14px}
+.groep-head{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:14px 20px;border-bottom:1px solid var(--lijn)}
+.groep-head h4{margin:0}
+.groep-tel{font-family:var(--mono);font-size:11px;color:var(--water-45);white-space:nowrap}
+.items{list-style:none;margin:0;padding:6px 0}
+.item{display:flex;align-items:flex-start;gap:12px;padding:8px 20px}
+.item:hover{background:rgba(13,43,54,.035)}
+.item input[type=checkbox]{appearance:none;width:17px;height:17px;flex:0 0 17px;margin-top:2px;
+  border:1.5px solid var(--lijn-sterk);border-radius:2px;background:var(--kaart);cursor:pointer;position:relative}
+.item input[type=checkbox]:checked{background:var(--inundatie);border-color:var(--inundatie)}
+.item input[type=checkbox]:checked:after{content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;
+  border:solid var(--kaart);border-width:0 2px 2px 0;transform:rotate(42deg)}
+.item .lbl{flex:1;cursor:pointer;font-size:15px}
+.item .lbl small{display:block;color:var(--water-45);font-size:12.5px;line-height:1.4}
+.item.done .lbl{color:var(--water-45);text-decoration:line-through;text-decoration-color:var(--lijn-sterk)}
+.item.done .lbl small{text-decoration:none}
+.cat-chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 6px;border-radius:2px;background:rgba(63,127,137,.13);color:var(--inundatie);
+  white-space:nowrap;margin-top:3px}
+.koop{appearance:none;border:1px solid var(--lijn-sterk);background:transparent;color:var(--water-45);
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;cursor:pointer;white-space:nowrap;margin-top:2px}
+.koop:hover{border-color:var(--oker);color:var(--oker)}
+.koop.on{background:var(--oker);border-color:var(--oker);color:#fff}
+
+.tasmeter{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--water-45)}
+.tasbar{width:70px;height:5px;background:var(--lijn-sterk);border-radius:3px;overflow:hidden}
+.tasbar i{display:block;height:100%;background:var(--inundatie)}
+
+.boodschappen{background:rgba(181,135,42,.10);border-left:3px solid var(--oker);padding:18px 20px;margin-top:20px}
+.boodschappen .kicker{color:var(--oker)}
+.boodschappen ul{margin:8px 0 0;columns:2;column-gap:28px}
+@media(max-width:560px){.boodschappen ul{columns:1}}
+
+#syncCode{width:100%;min-height:70px;font-family:var(--mono);font-size:12px;line-height:1.5;
+  padding:11px 13px;border:1px solid var(--lijn-sterk);border-radius:3px;background:var(--polder);
+  color:var(--water);resize:vertical;margin:4px 0 12px;word-break:break-all}
+.status{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--water-45);white-space:nowrap}
+.status b{color:var(--inundatie);font-weight:600}
+.status.warn b{color:var(--baksteen)}
+footer{padding:44px 0 60px;font-size:13.5px;color:var(--water-45)}
+footer .mono{letter-spacing:.05em}
+
+@media(max-width:640px){
+  section{padding:48px 0}
+  .dag-head{padding:18px}.dag-body{padding:4px 18px 20px}
+  .item{padding:8px 16px}
+  .linie-lab{font-size:9px}
+  .strip:before{left:44px}.strip li{padding-left:64px}
+  .strip li:after{left:40px}.strip li.big:after{left:37px}.strip li .km{width:36px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap">
+  <span class="brand">LF Waterlinie · 19–21 sep</span>
+  <a href="#draaiboek">Draaiboek</a>
+  <a href="#start">Naar Edam</a>
+  <a href="#route">Route</a>
+  <a href="#pont">Pont</a>
+  <a href="#slapen">Slapen</a>
+  <a href="#vervoer">Trein</a>
+  <a href="#paklijst">Paklijst</a>
+  <a href="#vertrek">Voor vertrek</a>
+  <a href="#onderweg">Onderweg</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">Eerste bikepacking trip · zaterdag 19 t/m maandag 21 september 2026</div>
+  <h1>Edam <span class="thin">→</span> Bergen op Zoom</h1>
+  <p class="lede">De volledige LF Waterlinieroute, van kop tot staart: 405 km langs de Stelling van Amsterdam, de Nieuwe Hollandse Waterlinie en de Zuiderwaterlinie. Sprinter naar Purmerend, 9 km naar het startpunt in Edam, en dan drie dagen zuidwaarts. Eén pont, een nacht in een vesting en een nacht in een fort, en maandagmiddag de trein naar Deinze.</p>
+
+  <div class="linie">
+    <div class="linie-bar" id="linieBar"></div>
+    <div class="linie-legend">
+      <span><b>405 km</b> de hele LF-route</span>
+      <span><b>+9 km</b> Purmerend → Edam</span>
+      <span><b>■</b> pont Gorinchem–Woudrichem, zondagmiddag</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="n">414</span><span class="l">kilometer</span></div>
+    <div class="stat"><span class="n">138</span><span class="l">km per dag</span></div>
+    <div class="stat"><span class="n">1</span><span class="l">veerpont</span></div>
+    <div class="stat"><span class="n">~17</span><span class="l">liter bagage</span></div>
+    <div class="stat"><span class="n">±60</span><span class="l">hoogtemeters</span></div>
+  </div>
+</div></header>
+
+<!-- ============ DRAAIBOEK ============ -->
+<section id="draaiboek"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Het draaiboek</h2></div>
+  <p class="sec-intro">Je rijdt de héle route, van Fort bij Edam tot Bergen op Zoom, met de Sprinter naar Purmerend als korte aanloop. Dat komt neer op 414 km in drie dagen, gemiddeld 138 km per dag. Dat is geen weekendje uitwaaien — dat is drie dagen achter elkaar een clubrit, met bagage. Het kan, maar de marge zit vooral in vroeg vertrekken.</p>
+
+  <div class="note">
+    <div class="kicker">Hoe het gewicht verdeeld is</div>
+    <p>Zaterdag 147 km, zondag 144 km, maandag 122 km. Twee zware dagen vooraan, een lichtere om mee af te sluiten — en dat is precies wat je wil, want maandag heb je een trein te halen. De pont valt zondagmiddag, ruim in het midden van je dag, dus die kan je niet mislopen door één keer te verslapen.</p>
+  </div>
+
+  <!-- VRIJDAG -->
+  <div class="dag">
+    <div class="dag-head">
+      <div><div class="dag-sub">Vrijdag 18 september · heenreis</div><div class="dag-title">Fiets mee naar Amsterdam</div></div>
+      <div class="dag-cijfers"><div><b>—</b>fietsen</div><div><b>±4u</b>trein</div></div>
+    </div>
+    <div class="dag-body">
+      <p>Je gaat sowieso voor je werk naar Amsterdam. De enige extra stap: de fiets mee, en die plek moet je vooraf reserveren. Details bij <a href="#vervoer">Trein &amp; tickets</a>.</p>
+      <div class="note">
+        <div class="kicker">Doe dit als eerste</div>
+        <p>De EuroCity Direct heeft <strong>12 fietsplaatsen</strong> per trein, de gewone EuroCity er 8. Reserveren is verplicht en die plekken raken vol. Boek dit vóór je hotels.</p>
+      </div>
+      <p class="mono" style="font-size:13px;color:var(--water-45)">Avond: fiets veilig stallen, tassen inpakken, dag-GPX op de Karoo, wekker op 6:00.</p>
+    </div>
+  </div>
+
+  <!-- ZATERDAG -->
+  <div class="dag">
+    <div class="dag-head">
+      <div><div class="dag-sub">Zaterdag 19 september · dag 1</div><div class="dag-title">Edam → Naarden</div></div>
+      <div class="dag-cijfers">
+        <div><b>147 km</b>afstand</div><div><b>07:30</b>trein</div><div><b>±17:00</b>aankomst</div>
+      </div>
+    </div>
+    <div class="dag-body">
+      <p>Sprinter van Amsterdam Centraal naar Purmerend, 9 km naar het startpunt bij Fort bij Edam, en dan met de klok mee de hele Stelling van Amsterdam rond: Beemster, Zaanstreek, IJmuiden, Haarlem, de Haarlemmermeer, Uithoorn, Abcoude, en via Muiden naar Naarden. Je langste dag, maar ook de meest gevarieerde.</p>
+      <ul class="strip">
+        <li class="big"><span class="km">trein</span><span class="naam">Amsterdam CS → Purmerend</span><div class="wat">Sprinter, ±17 minuten. Fietskaart Dal nodig; op zaterdag geldt het spitsverbod niet.</div></li>
+        <li><span class="km">–9</span><span class="naam">Purmerend → Edam</span><div class="wat">Negen kilometer over rustige wegen. Je warmt op terwijl je naar het startpunt rijdt.</div></li>
+        <li class="big"><span class="km">0</span><span class="naam">Fort bij Edam</span> <span class="badge">start GPX</span><div class="wat">Hier begint de LF Waterlinieroute. Foto maken — dit is een van de fotolocaties voor de oorkonde.</div></li>
+        <li><span class="km">15</span><span class="naam">Purmerend</span><div class="wat">Ja, hier was je net. Door de Beemster kom je er langs de andere kant weer voorbij.</div></li>
+        <li><span class="km">36</span><span class="naam">Uitgeest</span><div class="wat">Het Oer-IJ-landschap, forten van de Stelling links en rechts.</div></li>
+        <li><span class="km">45</span><span class="naam">IJmuiden</span><div class="wat">Forteiland en het Noordzeekanaal. Meest open stuk van de dag — hier kan het waaien.</div></li>
+        <li><span class="km">57</span><span class="naam">Spaarndam</span><div class="wat">Goede plek voor een echte stop, ruim een derde binnen.</div></li>
+        <li><span class="km">64</span><span class="naam">Haarlem</span><div class="wat">Daarna de Haarlemmermeerpolder in, langs Cruquius.</div></li>
+        <li><span class="km">91</span><span class="naam">Uithoorn · Fort aan de Drecht</span><div class="wat">Lunch. Je bent op tweederde, en het zwaarste zit erop.</div></li>
+        <li><span class="km">108</span><span class="naam">Abcoude</span><div class="wat">Fort in de Botshol, Vecht-landschap. Nog 30 km.</div></li>
+        <li><span class="km">125</span><span class="naam">Weesp</span><div class="wat">Vestingstadje aan de Vecht, Torenfort aan de Ossenmarkt.</div></li>
+        <li><span class="km">129</span><span class="naam">Muiden · Muiderslot</span><div class="wat">Laatste hoogtepunt van de dag.</div></li>
+        <li class="big"><span class="km">138,5</span><span class="naam">Naarden-Vesting</span><div class="wat">Slapen binnen de wallen. Eten op loopafstand.</div></li>
+      </ul>
+      <div class="tip">
+        <div class="kicker">Tijdschema</div>
+        <p>Trein om 07:30, in Edam rond 08:15, en dan 138,5 km te gaan. Met een lunchstop en een paar koffiepauzes ben je rond 17:00 in Naarden. Zonsondergang is pas kwart voor acht, dus je hebt anderhalf uur speling — maar niet meer dan dat als er iets misgaat.</p>
+        <p>Wil je het toch korter: stop in Weesp (km 125) of Muiden (km 129). Dan wordt zaterdag 134 of 138 km, maar zondag meteen 157 of 153 km. Je verplaatst het probleem alleen maar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONDAG -->
+  <div class="dag">
+    <div class="dag-head">
+      <div><div class="dag-sub">Zondag 20 september · dag 2</div><div class="dag-title">Naarden → Fort Bakkerskil</div></div>
+      <div class="dag-cijfers">
+        <div><b>144 km</b>afstand</div><div><b>07:30</b>vertrek</div><div><b>±16:30</b>aankomst</div>
+      </div>
+    </div>
+    <div class="dag-body">
+      <p>De complete Nieuwe Hollandse Waterlinie in één dag: van Naarden tot de Biesbosch, met halverwege de pont over de Merwede. Vertrek na een vroeg ontbijt — je wil ruim voor de laatste afvaart in Gorinchem staan.</p>
+      <ul class="strip">
+        <li class="big"><span class="km">138,5</span><span class="naam">Naarden</span><div class="wat">Ontbijt 07:00, wielen draaien 07:30.</div></li>
+        <li><span class="km">163</span><span class="naam">Loosdrechtse Plassen</span><div class="wat">Via 's-Graveland. Rustige ochtend langs het water.</div></li>
+        <li><span class="km">175</span><span class="naam">Maarssen · de Vecht</span><div class="wat">Buitenplaatsen langs de rivier.</div></li>
+        <li><span class="km">186</span><span class="naam">Utrecht · Fort aan de Klop</span><div class="wat">Koffie. Je bent op ruim een derde.</div></li>
+        <li><span class="km">201</span><span class="naam">Fort bij Vechten</span><div class="wat">Waterliniemuseum. Mooi, maar vandaag hooguit voor een korte stop.</div></li>
+        <li><span class="km">209</span><span class="naam">Nieuwegein · Plofsluis</span> <span class="badge rood">omleiding</span><div class="wat">Het fietspad Lekdijk-oost tussen knooppunt 3 en 6 is dicht tot 2032. Volg de borden ter plekke, niet je GPS.</div></li>
+        <li><span class="km">223</span><span class="naam">Culemborg</span><div class="wat">Over de Lek. Lunchstop, ongeveer halverwege.</div></li>
+        <li><span class="km">247</span><span class="naam">Leerdam</span><div class="wat">Glasstad. Laatste dorp voor de Waal. GeoFort ligt hier 4 km vanaf de route.</div></li>
+        <li><span class="km">260</span><span class="naam">Fort Vuren</span><div class="wat">Torenfort aan de Waal, met terras. Laatste koffie vóór de pont.</div></li>
+        <li class="pont"><span class="km">264</span><span class="naam">Pont Gorinchem → Woudrichem</span> <span class="badge rood">de enige pont</span><div class="wat">Rond 14:30 aan de steiger bij Buiten de Waterpoort. €2,83 inclusief fiets, ±10 minuten varen. Zie <a href="#pont">Pont &amp; oversteken</a>.</div></li>
+        <li><span class="km">267</span><span class="naam">Woudrichem</span><div class="wat">Vestingstadje aan de overkant. Nog 15 km.</div></li>
+        <li><span class="km">276</span><span class="naam">Werkendam</span><div class="wat">Rand van de Biesbosch.</div></li>
+        <li class="big"><span class="km">282</span><span class="naam">Fort Bakkerskil, Nieuwendijk</span><div class="wat">Slapen in het zuidelijkste fort van de Nieuwe Hollandse Waterlinie. Check-in tot 18:00.</div></li>
+      </ul>
+      <div class="tip">
+        <div class="kicker">Let op de klok</div>
+        <p>De pont ligt op 126 km in je dag, dus je hoeft niet vroeg te vrezen dat je hem mist — maar loop je twee uur achter, dan wordt het krap. Check zaterdagavond in de Riveer-app tot hoe laat hij zondag vaart, en hou dat als je harde tussentijd aan.</p>
+        <p>Check-in bij Fort Bakkerskil sluit om 18:00. Bel ze onderweg even als het spannend wordt.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAANDAG -->
+  <div class="dag">
+    <div class="dag-head">
+      <div><div class="dag-sub">Maandag 21 september · dag 3</div><div class="dag-title">Fort Bakkerskil → Bergen op Zoom → Deinze</div></div>
+      <div class="dag-cijfers">
+        <div><b>122 km</b>afstand</div><div><b>08:00</b>vertrek</div><div><b>±14:30</b>station</div>
+      </div>
+    </div>
+    <div class="dag-body">
+      <p>Je lichtste dag, en dat is precies goed: je hebt een trein te halen en waarschijnlijk wind tegen. West-Brabant, de Zuiderwaterlinie, en veel open polder.</p>
+      <div class="note">
+        <div class="kicker">Harde deadline · 16:00</div>
+        <p>Bij NS mag je fiets op werkdagen niet mee tussen 16:00 en 18:30. Zorg dat je uiterlijk 15:45 in de trein uit Bergen op Zoom zit, of je wacht tot half zeven. Met 122 km en vertrek om 08:00 sta je rond 14:30 op het perron — ruim een uur speling.</p>
+      </div>
+      <ul class="strip">
+        <li class="big"><span class="km">282</span><span class="naam">Fort Bakkerskil</span><div class="wat">Ontbijt vanaf 07:30, wielen draaien 08:00.</div></li>
+        <li><span class="km">291</span><span class="naam">Keizersveerbrug</span><div class="wat">Over de Bergsche Maas. Fietspad aan beide zijden van de brug — geen pont.</div></li>
+        <li><span class="km">297</span><span class="naam">Geertruidenberg</span><div class="wat">Oudste stad van Holland. Koffie op de Markt.</div></li>
+        <li><span class="km">318</span><span class="naam">Terheijden</span><div class="wat">Langs de Mark, ten noorden van Breda.</div></li>
+        <li><span class="km">339</span><span class="naam">Klundert</span><div class="wat">Lunchstop op bijna de helft. Hier weet je of je op schema ligt.</div></li>
+        <li><span class="km">348</span><span class="naam">Willemstad</span><div class="wat">Zevenhoekige vesting aan het Hollands Diep. Hoogtepunt van de dag.</div></li>
+        <li><span class="km">358</span><span class="naam">Fort Sabina</span><div class="wat">Daarna Dinteloord en Benedensas.</div></li>
+        <li><span class="km">380</span><span class="naam">Steenbergen</span><div class="wat">Laatste 25 km.</div></li>
+        <li><span class="km">398</span><span class="naam">Fort de Roovere, Halsteren</span><div class="wat">De Mozesbrug, dwars dóór de gracht. Even afstappen, dan de laatste 6 km.</div></li>
+        <li class="big"><span class="km">404</span><span class="naam">Station Bergen op Zoom</span><div class="wat">405 km compleet. Fiets in de trein, thuis in Deinze rond 18:00.</div></li>
+      </ul>
+      <div class="tip">
+        <div class="kicker">Noodrem</div>
+        <p>Loop je toch achter, dan kan je er eerder af: Lage Zwaluwe (na Geertruidenberg) en Roosendaal liggen allebei binnen een paar kilometer van de route en hebben een verbinding richting Roosendaal–Antwerpen. Je mist dan het laatste stuk, maar je haalt wel je trein.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ NAAR EDAM ============ -->
+<section id="start"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Naar de start in Edam</h2></div>
+  <p class="sec-intro">Edam heeft geen station, dus je komt er nooit helemaal per trein. Het dichtstbijzijnde station is Purmerend, op 9 km. Dat is de route die je rijdt — hieronder staat wat je moet weten, plus wat je mist door niet vanaf Amsterdam te fietsen.</p>
+
+  <div class="card" style="border-color:var(--inundatie);border-width:2px">
+    <div class="kicker">Je keuze · trein + 9 km</div>
+    <h3>Sprinter naar Purmerend</h3>
+    <div class="grid2" style="margin-top:14px">
+      <div>
+        <table>
+          <tr><th>Stap</th><th>Duur</th></tr>
+          <tr><td>Amsterdam Centraal → Purmerend, Sprinter</td><td class="t">±17 min</td></tr>
+          <tr><td>Purmerend → Fort bij Edam, fietsen</td><td class="t">±30 min</td></tr>
+          <tr><td>Kaartje voor je fiets: Fietskaart Dal</td><td class="t">± € 8,50</td></tr>
+        </table>
+        <p style="margin-top:14px">Op zaterdag geldt het NS-spitsverbod niet, dus je kan elke trein nemen. Neem er wel een rond 07:30: dan sta je om kwart over acht bij het startpunt en heb je de hele dag voor je.</p>
+        <p><a href="https://www.ns.nl/producten/fietskaart" target="_blank" rel="noopener">Fietskaart Dal kopen →</a></p>
+      </div>
+      <div>
+        <p><strong>Twee praktische dingen.</strong> Je fiets moet mee door de poortjes op Amsterdam Centraal — scan de QR van je gewone treinticket, niet die van de fietskaart. En in Purmerend is er geen bewegwijzering naar Edam die je kan volgen, want dit is geen LF-route: teken het traject de avond ervoor uit in Komoot of Google Maps op fietsmodus.</p>
+        <p>Rijd via Middenbeemster of langs het Noordhollandsch Kanaal. Beide zijn vlak en rustig, en je bent er in een half uur.</p>
+        <p style="color:var(--water-45);font-size:13.5px">Grappig detail: de LF-route zelf komt op km 15 weer langs Purmerend. Je passeert het station dus twee keer op één ochtend.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="kicker">Wat je overslaat</div>
+      <h4>De rit door Waterland</h4>
+      <p>Vanaf Amsterdam Centraal kan je ook fietsen: gratis pontje over het IJ naar Buiksloterweg, dan noordwaarts via Broek in Waterland en Monnickendam. 24 km, vlak, rustig, en op een zaterdagochtend zo goed als leeg. De variant over de Waterlandse Zeedijk langs het IJmeer (Durgerdam, Uitdam) is 29 km en nog mooier.</p>
+      <p>Je ruilt dat nu in voor 15 km minder en drie kwartier extra marge op je langste dag. Dat is een verdedigbare ruil — maar het is wel een van de mooiere fietsstukken van Noord-Holland.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Als je toch twijfelt</div>
+      <h4>Je kan het ter plekke beslissen</h4>
+      <p>Koop je Fietskaart Dal sowieso: die heb je op zaterdag nodig als je de trein neemt, en hij kost hetzelfde of je hem gebruikt of niet. Sta je zaterdagochtend om zeven uur fris op met mooi weer, dan stap je gewoon op de fiets richting Waterland.</p>
+      <p>Wat je niet moet doen is halverwege twijfelen. Beslis het bij het ontbijt en rijd door.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ ROUTE ============ -->
+<section id="route"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>De route</h2></div>
+  <p class="sec-intro">De LF Waterlinieroute is een van de vier LF-icoonroutes van Nederland Fietsland. In beide richtingen bewegwijzerd met bordjes "LF Waterlinieroute", dus je hoeft niet constant op je scherm te kijken. Je rijdt hem dit jaar in zijn geheel: Edam tot Bergen op Zoom, 405 km.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="kicker">Wat je ziet</div>
+      <h3>Drie linies in drie dagen</h3>
+      <p>Zaterdag rijd je de <strong>Stelling van Amsterdam</strong>: de ring forten rond de stad, dit jaar dertig jaar UNESCO-werelderfgoed. Zondag de <strong>Nieuwe Hollandse Waterlinie</strong> van Naarden tot de Waal — inundatiekanalen, liniedijken, waaiersluizen. Maandag het West-Brabantse deel van de <strong>Zuiderwaterlinie</strong>, met Geertruidenberg, Klundert en Willemstad.</p>
+      <p>Het idee achter alle drie: land onder water zetten om de vijand tegen te houden. Knielaag water — te diep om te lopen, te ondiep om te varen.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Terrein</div>
+      <h3>Vlak, maar niet makkelijk</h3>
+      <p>Nagenoeg geen hoogtemeters. De weerstand komt van wind en ondergrond: dijkwegen liggen open en onbeschut, en op delen van de route ligt halfverharding en klinkers. Met bagage voel je die klinkers in je polsen.</p>
+      <p>Op een gravelbike of stevige racefiets met minimaal 32 mm banden is dit prima te doen. Laat je bandenspanning zakken naar 4 à 4,5 bar in plaats van je gebruikelijke racedruk. Dat scheelt echt op de klinkerdijken, en over 414 km telt dat op.</p>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:16px">
+    <div class="card">
+      <div class="kicker">Navigatie</div>
+      <h4>Drie lagen</h4>
+      <ul>
+        <li><strong>Bordjes</strong> — de hele route is bewegwijzerd, in beide richtingen.</li>
+        <li><strong>Karoo</strong> — laad de dagbestanden hieronder, niet de volledige 405 km.</li>
+        <li><strong>LF-app</strong> — gratis, met horeca en actuele veertijden. Back-up op je telefoon.</li>
+      </ul>
+      <p><a href="https://www.nederlandfietsland.nl/blog-en-nieuws/op-stap-met-de-lf-app/" target="_blank" rel="noopener">Over de LF-app →</a></p>
+    </div>
+    <div class="card">
+      <div class="kicker">Check vlak voor vertrek</div>
+      <h4>Wijzigingen</h4>
+      <p>Twee dingen staan nu open. De omleiding bij Nieuwegein (Lekdijk-oost, tot 2032) raakt je zondag. Het <strong>Molletjesveer</strong> tussen Krommenie en Wormerveer vaart alleen donderdag t/m zondag — dat ligt op je zaterdagetappe, dus je zit goed, maar check het.</p>
+      <p><a href="https://www.nederlandfietsland.nl/actueel/lf-waterlinieroute" target="_blank" rel="noopener">Actuele routewijzigingen →</a></p>
+    </div>
+    <div class="card">
+      <div class="kicker">Nu wel verdiend</div>
+      <h4>Oorkonde</h4>
+      <p>Je rijdt de volledige route, dus je kan achteraf de framesticker en de oorkonde aanvragen, inclusief vermelding in de eregalerij. Maak onderweg foto's op de aangegeven fotolocaties — de eerste staat bij je startpunt in Edam.</p>
+      <p><a href="https://www.nederlandfietsland.nl/lf-routes/goede-voorbereiding/tastbare-herinnering/" target="_blank" rel="noopener">Fotolocaties →</a></p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="kicker">Meegeleverd</div>
+    <h4>Je GPX-bestanden</h4>
+    <table>
+      <tr><th>Bestand</th><th>Traject</th><th>Afstand</th></tr>
+      <tr><td class="t">dag1-edam-naarden.gpx</td><td>Fort bij Edam → Naarden, de hele Stelling van Amsterdam</td><td class="t">138,5 km</td></tr>
+      <tr><td class="t">dag2-naarden-fort-bakkerskil.gpx</td><td>Naarden → Utrecht → Culemborg → pont → Fort Bakkerskil</td><td class="t">143,6 km</td></tr>
+      <tr><td class="t">dag3-fort-bakkerskil-bergen-op-zoom.gpx</td><td>Fort Bakkerskil → Willemstad → Bergen op Zoom</td><td class="t">122,5 km</td></tr>
+    </table>
+    <p style="margin-top:12px;color:var(--water-45);font-size:13.5px">De 9 km van station Purmerend naar Fort bij Edam zit er niet in: dat is geen LF-route. Plan die apart in Komoot of Google Maps.</p>
+  </div>
+</div></section>
+
+<!-- ============ PONT ============ -->
+<section id="pont"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Pont &amp; oversteken</h2></div>
+  <p class="sec-intro">Je vroeg of er nog ergens anders een pont nodig is. Ik heb de GPX punt voor punt nagelopen: op je hele route is er precies één verplichte overtocht per boot. Die valt zondagmiddag, ruim in het midden van je dag — de comfortabelste plek waar hij kan liggen.</p>
+
+  <div class="card">
+    <div class="kicker">Zondag ± 14:30 · km 264</div>
+    <h3>Gorinchem → Woudrichem</h3>
+    <div class="grid2" style="margin-top:14px">
+      <div>
+        <table>
+          <tr><th>Wat</th><th></th></tr>
+          <tr><td>Uitbater</td><td>Riveer (elektrische veerboot)</td></tr>
+          <tr><td>Opstappen</td><td>Buiten de Waterpoort 1, Gorinchem</td></tr>
+          <tr><td>Prijs</td><td>€ 2,83 — fiets inbegrepen</td></tr>
+          <tr><td>Overtocht</td><td>±1,7 km over de Boven-Merwede, ±10 min</td></tr>
+          <tr><td>Vaart in september</td><td>dagelijks, óók op zondag</td></tr>
+        </table>
+      </div>
+      <div>
+        <p>Mazzel: september is de <strong>laatste maand</strong> dat Riveer op zondag naar Woudrichem vaart. Van oktober tot april ligt de zondagdienst stil. Je zit er net binnen.</p>
+        <p>De vaartijden verschuiven per seizoen en bij evenementen of onderhoud, en de PDF's op de site lopen achter. <strong>Check zaterdagavond in de Riveer-app</strong> tot hoe laat hij zondag vaart, en hou die laatste afvaart aan als je harde tussentijd.</p>
+        <p><a href="https://app.riveer.nl/nl/kaartje-kopen" target="_blank" rel="noopener"><strong>Kaartje kopen →</strong></a><br>
+        <a href="https://app.riveer.nl/nl/dienstregeling" target="_blank" rel="noopener">Actuele dienstregeling →</a><br>
+        <a href="https://www.riveer.nl/gorinchem-woudrichem/" target="_blank" rel="noopener">Over dit veer →</a><br>
+        <a href="https://veerponten.nl/veren/gorinchem-woudrichem/" target="_blank" rel="noopener">veerponten.nl →</a></p>
+        <p style="color:var(--water-45);font-size:13.5px">Koop je kaartje vooraf in de app, dan hoef je aan boord alleen te scannen.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="kicker">Als je hem toch mist</div>
+      <p>Rond Gorinchem varen meerdere Riveer-veren, ook naar Sleeuwijk en Werkendam, en er is een watertaxi. Kom je er echt niet over, dan is de omweg over de Merwedebrug (A27) mogelijk maar niet leuk. Zorg gewoon dat je rond half drie aan de steiger staat.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">De andere oversteken</div>
+    <h3>Allemaal bruggen</h3>
+    <ul>
+      <li><strong>Het Noordzeekanaal</strong> bij IJmuiden op zaterdag — dat gaat via een pont, maar die vaart doorlopend en gratis.</li>
+      <li><strong>Het Molletjesveer</strong> tussen Krommenie en Wormerveer, ook op zaterdag: vaart donderdag t/m zondag, dus jij zit goed. Op maandag t/m woensdag zou je moeten omrijden via knooppunt 88–91–90–87.</li>
+      <li><strong>De Lek</strong> tussen Nieuwegein en Culemborg — brug bij Vianen.</li>
+      <li><strong>De Bergsche Maas</strong> bij Keizersveer — de Keizersveerbrug heeft aan beide kanten een fietspad. Geen pont, ondanks de naam: het echte Keizersveer verdween in 1931 toen de brug er kwam.</li>
+      <li><strong>Het Hollands Diep</strong> steek je niet over; de route buigt bij Willemstad landinwaarts.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- ============ SLAPEN ============ -->
+<section id="slapen"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Slapen</h2></div>
+  <p class="sec-intro">Twee nachten, allebei pal aan de route — geen extra kilometers aan het eind van een lange dag. Boek allebei zo snel mogelijk: het is een septemberweekend en het zijn kleine adressen met weinig kamers.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="kicker">Nacht 1 · zaterdag · km 138,5</div>
+      <h3>Naarden-Vesting</h3>
+      <p>Er is geen fort-B&amp;B op het juiste punt van je zaterdag — maar Naarden zelf is het alternatief. Je slaapt binnen de best bewaarde stervesting van Europa: zes bastions, dubbele omwalling, dubbele grachtengordel. Dat is geen fort, dat is de hele linie in één stadje.</p>
+      <p>Alles op loopafstand, restaurants om de hoek. Na 147 km wil je precies dat.</p>
+      <p class="mono" style="font-size:13px;background:rgba(63,127,137,.09);padding:12px 14px;border-left:3px solid var(--inundatie)">
+        <strong>Bussummerstraat 35</strong><br>1411 PL Naarden, Noord-Holland<br>via Airbnb
+      </p>
+      <p>Je zit binnen de wallen, op een paar minuten van de Grote Kerk en de horeca rond de Marktstraat. De route komt er vlak langs, dus je hoeft aan het eind van je dag geen meter om te rijden.</p>
+      <div class="note" style="margin-bottom:0">
+        <div class="kicker">Vraag de host vooraf</div>
+        <p>Waar kan de fiets 's nachts staan — binnen, in een schuur of achter een poort? Bij Airbnb is dat zelden vermeld en je wil het niet om zeven uur 's avonds pas ontdekken. Vraag meteen ook wanneer je 's ochtends kan vertrekken en of er ontbijt is; zo niet, koop zaterdagavond iets voor onderweg.</p>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--inundatie);border-width:2px">
+      <div class="kicker">Nacht 2 · zondag · km 282</div>
+      <h3>B&amp;B Fort Bakkerskil</h3>
+      <p>Het zuidelijkste fort van de Nieuwe Hollandse Waterlinie, gebouwd tussen 1877 en 1880 om de Papsluis te beschermen. UNESCO-werelderfgoed, 200 meter van de route, aan de rand van de Biesbosch.</p>
+      <p>Slapen kan in de voormalige <strong>kruitkamer</strong>, de <strong>officierskamer</strong>, de <strong>remise</strong> of de <strong>ziekenboeg</strong> — allemaal met eigen badkamer en de authentieke uitstraling intact. Marco en Hanny runnen het als familiebedrijf, en er is een deels overdekt terras op het fortterrein waar je in het weekend terechtkan voor een borrel of iets te eten.</p>
+      <p class="mono" style="font-size:13px;background:rgba(63,127,137,.09);padding:12px 14px;border-left:3px solid var(--inundatie)">
+        <strong>Kildijk 143</strong><br>4255 TH Nieuwendijk (NL)<br>
+        <a href="tel:+31645934892">+31 6 45 93 48 92</a><br>
+        <a href="mailto:info@fortbakkerskil.nl">info@fortbakkerskil.nl</a><br>
+        <a href="https://www.fortbakkerskil.nl" target="_blank" rel="noopener">www.fortbakkerskil.nl</a>
+      </p>
+      <p class="mono" style="font-size:13px;color:var(--water-45)">Check-in 15:00–18:00 · check-out 10:30</p>
+      <div class="note" style="margin-bottom:0">
+        <div class="kicker">Bel ze op +31 6 45 93 48 92</div>
+        <p>Twee dingen om vooraf te regelen: waar de fiets 's nachts kan staan, en hoe laat je maandag kan ontbijten. Je wil om 08:00 weg zijn. Loopt het zondag uit en haal je 18:00 niet, bel dan onderweg — niet als je er al staat.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="kicker">Je vroeg ernaar</div>
+    <h4>Kan je zaterdag óók in een fort slapen?</h4>
+    <p>Kort antwoord: niet op een manier die werkt. Er liggen wel degelijk forten met bedden op je zaterdagroute, maar geen enkele op het juiste punt of in de juiste vorm.</p>
+    <div class="grid3" style="margin-top:14px">
+      <div>
+        <h4>Fort Resort Beemster · km 7</h4>
+        <p>Een echt fort van de Stelling van Amsterdam, omgebouwd tot hotel met spa, sauna en restaurant. Precies wat je zoekt — alleen ligt het zeven kilometer na je startpunt. Als slaapplaats onbruikbaar; als koffiestop na tien minuten fietsen ook een beetje raar.</p>
+      </div>
+      <div>
+        <h4>Fort Uitermeer · km 126</h4>
+        <p>Perfecte plek op de route, waar de Stelling van Amsterdam en de Nieuwe Hollandse Waterlinie elkaar raken. Maar overnachten doe je er in een <strong>floating lodge</strong>: een houten hut op een vlot, bereikbaar door jezelf met je bagage aan een koord over te trekken. Zelf koken, en geen normale douche. Leuk avontuur, verkeerde avond.</p>
+      </div>
+      <div>
+        <h4>Forteiland Pampus · bij km 129</h4>
+        <p>Slapen in het mistklokhuisje op een onbewoond eiland voor de kust van Muiden. Magisch, maar je moet met een boot en je fiets blijft aan wal. Voor een bikepacking trip is dat het verkeerde soort gedoe.</p>
+      </div>
+    </div>
+    <p style="margin-top:14px">Vandaar Naarden: geen fort, maar wel het beste bewaarde vestingwerk van de hele route, met een bed, een douche en een restaurant op honderd meter. Dat is wat je zaterdagavond nodig hebt.</p>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Terugvalopties</div>
+    <h4>Als een van beide vol zit</h4>
+    <div class="grid3" style="margin-top:12px">
+      <div>
+        <h4>In plaats van Naarden</h4>
+        <p>Weesp (km 125) of Muiden (km 129). Scheelt 13 of 10 km op zaterdag, maar zondag wordt dan 157 of 153 km. Alleen doen als het echt moet.</p>
+      </div>
+      <div>
+        <h4>In plaats van Fort Bakkerskil</h4>
+        <p>Woudrichem (km 267) ligt 15 km eerder: B&amp;B Op de Vestingwal op een bastion, of B&amp;B Het Huijsje binnen de wallen met afgesloten stalling. Zondag wordt 129 km, maandag 137 km.</p>
+      </div>
+      <div>
+        <h4>Nog verder door</h4>
+        <p>Geertruidenberg (km 297) maakt maandag heel licht (108 km) maar zondag zwaar (158 km). Alleen als je maandag echt vroeg thuis wil zijn.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ VERVOER ============ -->
+<section id="vervoer"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Trein &amp; tickets</h2></div>
+  <p class="sec-intro">Je fiets gaat mee op de trein, heen én terug. Dat vraagt in beide richtingen een apart kaartje voor de fiets, en op de internationale trein een verplichte reservering.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="kicker">Heen · vrijdag</div>
+      <h3>Deinze → Amsterdam</h3>
+      <table>
+        <tr><th>Traject</th><th>Vervoerder</th><th>Fiets</th></tr>
+        <tr><td>Deinze → Gent-Sint-Pieters</td><td>NMBS</td><td>Fietssupplement</td></tr>
+        <tr><td>Gent → Antwerpen-Centraal</td><td>NMBS IC</td><td>Fietssupplement</td></tr>
+        <tr><td>Antwerpen → Amsterdam</td><td>EuroCity (Direct)</td><td class="t">Reservering verplicht</td></tr>
+      </table>
+      <p style="margin-top:14px"><strong>Fietsplaats reserveren:</strong> de EuroCity Direct heeft 12 fietsplaatsen, de gewone EuroCity er 8. Je boekt het fietskaartje <em>los</em> van je eigen ticket — let op dat je voor jezelf en je fiets dezelfde trein kiest.</p>
+      <p><a href="https://www.nsinternational.com/nl/reisinformatie/voor-vertrek/fiets-meenemen-in-de-trein" target="_blank" rel="noopener">Fiets boeken bij NS International →</a></p>
+      <div class="note">
+        <div class="kicker">Let op</div>
+        <p>Fietsen zijn verboden in de stations Brussel-Centraal, Brussel-Congres en Brussel-Kapellekerk. Stap dus over in <strong>Antwerpen-Centraal</strong>, niet in Brussel. De Eurostar is geen optie met een gewone fiets.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="kicker">Terug · maandag</div>
+      <h3>Bergen op Zoom → Deinze</h3>
+      <table>
+        <tr><th>Traject</th><th>Vervoerder</th><th>Fiets</th></tr>
+        <tr><td>Bergen op Zoom → Roosendaal</td><td>NS</td><td>Fietskaart Dal</td></tr>
+        <tr><td>Roosendaal → Antwerpen</td><td>NMBS S-trein</td><td>Fietsticket grens</td></tr>
+        <tr><td>Antwerpen → Gent → Deinze</td><td>NMBS IC</td><td>Idem</td></tr>
+      </table>
+      <p style="margin-top:14px">De S-trein Puurs–Antwerpen–Roosendaal rijdt 17 keer per dag in elke richting en neemt fietsen mee. <strong>Meld je fiets vóór het instappen bij de treinbegeleider</strong> — dat is bij NMBS geen formaliteit maar de regel.</p>
+      <p>Reken op 2u45 tot 3u15 totaal, met twee overstappen. Vertrek 15:00 in Bergen op Zoom = rond 18:00 in Deinze.</p>
+      <p><a href="https://www.belgiantrain.be/nl/products/crossborder/roosendaal" target="_blank" rel="noopener">Grensverbinding Roosendaal (NMBS) →</a></p>
+      <div class="note">
+        <div class="kicker">Spitsverbod NS · 16:00–18:30</div>
+        <p>Maandag is een werkdag. Op NS-treinen mag je fiets dan niet mee tussen 16:00 en 18:30. Zit je om 15:45 niet in de trein uit Bergen op Zoom, dan sta je tot half zeven stil.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="kicker">Wat het kost</div>
+    <h4>Kaartjes voor de fiets</h4>
+    <table>
+      <tr><th>Kaartje</th><th>Prijs</th><th>Waar</th></tr>
+      <tr><td>NS Fietskaart Dal — hele dag, hele NS-net (ook voor de Sprinter naar Purmerend)</td><td class="t">± € 8,50</td><td><a href="https://www.ns.nl/producten/fietskaart" target="_blank" rel="noopener">ns.nl</a></td></tr>
+      <tr><td>NMBS Fiets Supplement — per rit, dal en weekend</td><td class="t">€ 3</td><td><a href="https://www.belgiantrain.be/nl/products/supplements/bike" target="_blank" rel="noopener">belgiantrain.be</a></td></tr>
+      <tr><td>NMBS Fiets Supplement — piekuren op weekdagen</td><td class="t">€ 5</td><td>idem</td></tr>
+      <tr><td>Internationale fietsreservering EuroCity</td><td class="t">reserveren</td><td><a href="https://www.nsinternational.com/nl" target="_blank" rel="noopener">nsinternational.com</a></td></tr>
+      <tr><td>Riveer-pont Gorinchem–Woudrichem, incl. fiets</td><td class="t">€ 2,83</td><td><a href="https://app.riveer.nl/nl/kaartje-kopen" target="_blank" rel="noopener">app.riveer.nl</a></td></tr>
+      <tr><td>Pont over het IJ en Molletjesveer</td><td class="t">gratis / €1</td><td>aan boord</td></tr>
+    </table>
+    <p style="margin-top:12px;color:var(--water-45);font-size:13.5px">Prijzen wijzigen; check ze bij het boeken. Vanaf 1 juli 2026 kan je het NMBS-fietssupplement niet meer aan boord kopen — koop het vooraf via de app, de automaat of het loket.</p>
+  </div>
+</div></section>
+
+<!-- ============ PAKLIJST ============ -->
+<section id="paklijst"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Paklijst &amp; tassen</h2></div>
+  <p class="sec-intro">Eén lijst, gesorteerd per tas — dus je vinkt af en je weet meteen waar het in gaat. Staat er iets waarvan je denkt "dat heb ik niet", druk op <span class="mono" style="font-size:12px">kopen</span> en het schuift naar de boodschappenlijst onderaan. Je vinkjes worden bewaard, ook als je de pagina sluit.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="kicker">Basisregel</div>
+      <h4>Zwaar laag en centraal, licht en volumineus naar achteren</h4>
+      <p>Alles met gewicht — pechset, powerbank, slot, water — gaat in de <strong>frametas</strong>. Die zit tussen je benen, laag bij de grond, en beïnvloedt je stuurgedrag nauwelijks. Alles wat licht maar omvangrijk is — kleding — gaat in de <strong>zadeltas</strong>.</p>
+      <p>Hou de zadeltas onder de 4 kg en trek de compressiebanden strak. Een zwaar beladen zadeltas gaat bij lage snelheid en op klinkers slingeren, en dat voel je in je hele fiets. Er is geen stuurtas in deze set, dus hou je stuur schoon: niets zwaars vooraan.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Twee dingen die vaak misgaan</div>
+      <h4>Bidonhouders en zadelhoogte</h4>
+      <p><strong>Bidonhouders.</strong> Een frametas neemt vaak precies de ruimte in van je bidonhouders. Check dit thuis. Oplossing: de snack pack aan het stuur voor bidon nummer twee, of een houder onder de onderbuis.</p>
+      <p><strong>Zadelhoogte.</strong> Een zadeltas van 10 liter heeft een paar centimeter vrije ruimte nodig tussen zadel en achterband. Zit je laag, dan schuurt de tas op je band. Ook dat wil je thuis ontdekken, niet in Waterland.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Huren bij Adventure Bikes</div>
+    <h4>De set die je gaat gebruiken</h4>
+    <table>
+      <tr><th>Tas</th><th>Inhoud</th><th>Waarvoor</th></tr>
+      <tr><td><a href="https://www.adventurebikes.be/verhuur/#seat-pack" target="_blank" rel="noopener">Seat pack</a></td><td class="t">10 L</td><td>Kleding en alles wat je pas 's avonds nodig hebt. Roll-top met uitneembare waterdichte binnenvoering.</td></tr>
+      <tr><td><a href="https://www.adventurebikes.be/verhuur/#frame-pack" target="_blank" rel="noopener">Frame pack</a></td><td class="t">3 / 4 / 5,5 L</td><td>Het gewicht. Neem de grootste die in je framedriehoek past.</td></tr>
+      <tr><td><a href="https://www.adventurebikes.be/verhuur/#top-tube" target="_blank" rel="noopener">Top tube bag</a></td><td class="t">±1 L</td><td>Telefoon, geld, papieren. Alles waar je niet voor wil afstappen.</td></tr>
+      <tr><td><a href="https://www.adventurebikes.be/verhuur/#snack-pack" target="_blank" rel="noopener">Snack pack</a></td><td class="t">0,7 L</td><td>Eten binnen handbereik, of een tweede bidon van 500–750 ml.</td></tr>
+    </table>
+    <p style="margin-top:12px">Samen ongeveer 17 liter. Dat is genoeg omdat je in bedden slaapt: geen tent, geen matje, geen slaapzak. Reserveer op tijd en monteer de tassen thuis — de bevestiging met klittenband en gespen wil je niet op de ochtend van vertrek voor het eerst doen.</p>
+  </div>
+
+  <div class="tools">
+    <button class="btn" id="fKopen">Toon alleen nog te kopen</button>
+    <button class="btn" id="fOpen">Toon alleen nog te pakken</button>
+    <button class="btn" id="reset">Alles wissen</button>
+    <span class="meter" id="meter"></span>
+  </div>
+  <div class="status" id="opslagStatus" style="margin:-14px 0 20px"></div>
+
+  <div id="paklijstView"></div>
+
+  <div class="boodschappen" id="boodschappen">
+    <div class="kicker">Nog te kopen</div>
+    <div id="boodschappenBody"><p style="color:var(--water-45)">Niets aangevinkt. Loop de lijst door en markeer wat je nog niet in huis hebt.</p></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="kicker">Bewaren &amp; overzetten</div>
+    <h4>Je vinkjes op je laptop én je telefoon</h4>
+    <p id="syncUitleg">Alles wat je aanvinkt — de paklijst, de kopen-markeringen en de voorbereidingslijst — wordt automatisch bewaard.</p>
+    <p>Wil je op een ander toestel verder, of wil je een reservekopie: hieronder staat je overzetcode. Kopieer hem, plak hem daar in hetzelfde vak en druk op herstellen.</p>
+    <textarea id="syncCode" spellcheck="false" aria-label="Overzetcode"></textarea>
+    <div class="tools" style="margin-bottom:0">
+      <button class="btn" id="copyCode">Kopieer code</button>
+      <button class="btn" id="applyCode">Herstel uit deze code</button>
+      <span class="status" id="syncStatus"></span>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ VOOR VERTREK ============ -->
+<section id="vertrek"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Voor vertrek</h2></div>
+  <p class="sec-intro">De volgorde is niet willekeurig. Wat schaars is boek je eerst.</p>
+  <div id="todoView"></div>
+</div></section>
+
+<!-- ============ ONDERWEG ============ -->
+<section id="onderweg" style="border-bottom:none"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Onderweg</h2></div>
+  <p class="sec-intro">Wat je als clubrenner al weet, geldt hier ook. Wat anders is: drie dagen achter elkaar, met gewicht, en je moet elke avond ergens aankomen.</p>
+
+  <div class="grid3">
+    <div class="card">
+      <div class="kicker">Eten &amp; drinken</div>
+      <h4>Eet vóór je honger hebt</h4>
+      <p>Op ruim 130 km per dag verbrand je meer dan je onderweg opneemt. Eet elk uur iets, ook als je geen zin hebt. Plan per dag één echte lunchstop — Uithoorn op zaterdag, Culemborg op zondag, Klundert op maandag — en reken niet op een winkel in de polder.</p>
+      <p>Twee bidons, bijvullen bij elke stop. Nederlandse horeca vult je bidon meestal gratis als je iets besteld hebt.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Weer</div>
+      <h4>September, en veel open water</h4>
+      <p>Reken op 15 tot 20 graden en op wind. De overheersende richting is zuidwest: op zaterdag heb je die grotendeels mee tot IJmuiden en tegen op de weg terug naar Naarden, op maandag heb je hem vol tegen richting Bergen op Zoom. Dat maandag je kortste dag is, is dus geen toeval maar een gunst.</p>
+      <p>Regenjas gaat altijd mee, ook bij mooie voorspelling. Op open dijken koel je snel af als het nat wordt.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Zitvlak</div>
+      <h4>Het echte risico</h4>
+      <p>Niet je benen geven het op, maar je zitvlak. Drie dagen op rij is voor je huid iets anders dan drie losse ritten. Zeem elke ochtend, verse bibshort elke dag, en douchen zodra je aankomt.</p>
+      <p style="color:var(--water-45);font-size:13.5px">Je bent nog met je bikefitting bezig — rijd de proefrit met volle tassen zeker vóór vertrek, dan weet je of je zadelpositie ook mét gewicht klopt.</p>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <div class="kicker">Pech</div>
+      <h4>Wat je zelf kan oplossen</h4>
+      <p>Twee binnenbanden, plakset en een multitool dekken 95% van wat er misgaat. Wat je niet zelf oplost — gebroken derailleurhanger, kapot wiel — los je op met de trein: de route loopt langs of vlakbij stations in Purmerend, Uitgeest, Haarlem, Weesp, Utrecht, Culemborg, Leerdam, Gorinchem, Lage Zwaluwe, Roosendaal en Bergen op Zoom. Nederland is nooit ver van een spoorlijn.</p>
+      <p>Zet je pechhulpnummer en verzekeringsgegevens in je telefoon, niet alleen thuis.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Slot</div>
+      <h4>Neem er één mee</h4>
+      <p>Je stapt af voor koffie, voor de pont, voor een fort. Een licht vouwslot of stevige kabel volstaat: je fiets staat nooit lang alleen, maar wel regelmatig even. Zonder slot durf je niet te stoppen, en dan mis je de helft van de route.</p>
+      <p>Op je overnachtingsadressen: vraag vooraf naar een afgesloten stalling. Naarden en Fort Bakkerskil hebben allebei ruimte, maar zeg het er even bij.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="kicker">Tot slot</div>
+    <h4>Waar het misloopt bij een eerste bikepacking trip</h4>
+    <ul>
+      <li><strong>Te veel meenemen.</strong> Je hebt 17 liter en dat is genoeg. Elke twijfel is een nee.</li>
+      <li><strong>Te laat vertrekken.</strong> Alle marge zit in de ochtend, niet in de avond.</li>
+      <li><strong>De tassen voor het eerst monteren op de dag zelf.</strong> Doe de proefrit.</li>
+      <li><strong>Blind je GPS volgen.</strong> Bij de omleiding in Nieuwegein win je het niet van de borden.</li>
+      <li><strong>De laatste pont van zondag niet checken.</strong> Hij ligt op 126 km in je dag, en er is geen alternatief.</li>
+      <li><strong>De laatste trein onderschatten.</strong> Maandag om 16:00 gaat de deur dicht voor je fiets.</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p class="mono">LF WATERLINIEROUTE · EDAM – BERGEN OP ZOOM · 405 KM · MET AANRIT 414 KM</p>
+  <p>Route-informatie: Nederland Fietsland. Vaartijden: Riveer. Ticketvoorwaarden: NS, NS International en NMBS. Controleer prijzen, vaartijden en routewijzigingen kort voor vertrek — die veranderen.</p>
+</div></footer>
+
+<script>
+/* ---------------- de linie bovenaan ---------------- */
+(function(){
+  var TOT=405, bar=document.getElementById('linieBar');
+  function pct(km){return km/TOT*100;}
+  var html='<div class="linie-track"></div>';
+  html+='<div class="linie-day d1" style="left:0;width:'+pct(138.5)+'%"></div>';
+  html+='<div class="linie-day d2" style="left:'+pct(138.5)+'%;width:'+pct(282.1-138.5)+'%"></div>';
+  html+='<div class="linie-day d3" style="left:'+pct(282.1)+'%;width:'+pct(404.6-282.1)+'%"></div>';
+  var nodes=[{km:0,t:'Edam',a:'0'},{km:138.5,t:'Naarden',a:'-50%'},
+             {km:282.1,t:'Bakkerskil',a:'-50%'},{km:404.6,t:'Bergen op Zoom',a:'-100%'}];
+  nodes.forEach(function(n){
+    html+='<div class="linie-node" style="left:'+pct(n.km)+'%"></div>';
+    html+='<div class="linie-top" style="left:'+pct(n.km)+'%;transform:translateX('+n.a+')">'+n.t+'</div>';
+  });
+  html+='<div class="linie-node pont" style="left:'+pct(264.3)+'%"></div>';
+  [{km:45,t:'IJmuiden'},{km:91,t:'Uithoorn'},{km:186,t:'Utrecht'},{km:223,t:'Culemborg'},{km:348,t:'Willemstad'}]
+  .forEach(function(m){
+    html+='<div class="linie-pt" style="left:'+pct(m.km)+'%"></div>';
+    html+='<div class="linie-lab" style="left:'+pct(m.km)+'%">'+m.t+'</div>';
+  });
+  bar.innerHTML=html;
+})();
+
+/* ---------------- data ---------------- */
+var TASSEN=[
+  {k:'lijf', naam:'Aan het lijf en in je trikotzakken', vol:null, uitleg:'Wat je draagt of onder handbereik hebt tijdens het rijden.'},
+  {k:'top',  naam:'Top tube bag · 1 L',    vol:1,   uitleg:'Vlak achter je stuurpen. Alles waarvoor je niet wil afstappen.'},
+  {k:'snack',naam:'Snack pack · 0,7 L',    vol:0.7, uitleg:'Aan het stuur. Eten, of een tweede bidon.'},
+  {k:'frame',naam:'Frame pack · 5,5 L',    vol:5.5, uitleg:'Laag en centraal. Hier gaat het gewicht in.'},
+  {k:'seat', naam:'Seat pack · 10 L',      vol:10,  uitleg:'Licht en volumineus. Kleding en avondspullen. Hou hem onder 4 kg.'}
+];
+var CATLABEL={dragen:'kleding',reserve:'kleding',weer:'weer',pech:'pech',tech:'tech',
+  verzorging:'verzorging',papieren:'papieren',eten:'eten',divers:'divers'};
+
+var ITEMS=[
+  /* aan het lijf */
+  {id:'i01',n:'Bibshort',cat:'dragen',tas:'lijf'},
+  {id:'i02',n:'Fietstrui',cat:'dragen',tas:'lijf'},
+  {id:'i03',n:'Fietssokken',cat:'dragen',tas:'lijf'},
+  {id:'i04',n:'Fietsschoenen',cat:'dragen',tas:'lijf'},
+  {id:'i05',n:'Helm',cat:'dragen',tas:'lijf'},
+  {id:'i06',n:'Fietsbril',cat:'dragen',tas:'lijf'},
+  {id:'i07',n:'Handschoenen',cat:'dragen',tas:'lijf'},
+  {id:'i08',n:'Fietspet onder de helm',cat:'dragen',tas:'lijf',s:'Tegen zon en motregen. Weegt niets.'},
+  {id:'i40',n:'Karoo + stuurhouder',cat:'tech',tas:'lijf'},
+  {id:'i44',n:'Voorlicht',cat:'tech',tas:'lijf',s:'Ook overdag. Je rijdt door tunneltjes en over dijken in de schemer.'},
+  {id:'i45',n:'Achterlicht',cat:'tech',tas:'lijf'},
+  {id:'i70',n:'2 bidons',cat:'eten',tas:'lijf'},
+
+  /* top tube */
+  {id:'i41',n:'Telefoon',cat:'tech',tas:'top'},
+  {id:'i60',n:'Identiteitskaart',cat:'papieren',tas:'top',s:'Je steekt een grens over met de trein.'},
+  {id:'i61',n:'Bankkaart',cat:'papieren',tas:'top'},
+  {id:'i62',n:'Wat cash',cat:'papieren',tas:'top',s:'Voor de pont en kleine horeca.'},
+  {id:'i63',n:'Treintickets en fietskaartjes',cat:'papieren',tas:'top',s:'Download ze offline. Geen bereik op een dijk.'},
+  {id:'i64',n:'Hotelbevestigingen met telefoonnummers',cat:'papieren',tas:'top'},
+  {id:'i65',n:'Pechhulp- en verzekeringsgegevens',cat:'papieren',tas:'top'},
+  {id:'i58',n:'Persoonlijke medicatie',cat:'verzorging',tas:'top'},
+  {id:'i55',n:'Lippenbalsem',cat:'verzorging',tas:'top'},
+  {id:'i82',n:'Brillendoekje',cat:'divers',tas:'top'},
+
+  /* snack pack */
+  {id:'i71',n:'Repen voor 3 dagen',cat:'eten',tas:'snack'},
+  {id:'i72',n:'Gels of blokjes',cat:'eten',tas:'snack'},
+  {id:'i73',n:'Elektrolyt-tabletten',cat:'eten',tas:'snack'},
+  {id:'i74',n:'Noten of gedroogd fruit',cat:'eten',tas:'snack',s:'Als je genoeg hebt van zoet, en dat gebeurt rond dag 2.'},
+
+  /* frame pack */
+  {id:'i30',n:'2× binnenband',cat:'pech',tas:'frame'},
+  {id:'i31',n:'Bandenlichters',cat:'pech',tas:'frame'},
+  {id:'i32',n:'Plakset',cat:'pech',tas:'frame'},
+  {id:'i33',n:'Multitool met kettingpons',cat:'pech',tas:'frame'},
+  {id:'i34',n:'Minipomp',cat:'pech',tas:'frame',s:'Betrouwbaarder dan CO2 als je drie dagen weg bent.'},
+  {id:'i35',n:'Reserve kettingschakel',cat:'pech',tas:'frame'},
+  {id:'i36',n:'Reserve derailleurhanger',cat:'pech',tas:'frame',s:'Merkspecifiek. Zonder deze rijd je niet verder.'},
+  {id:'i37',n:'Tie-wraps en stukje tape',cat:'pech',tas:'frame'},
+  {id:'i38',n:'Tubeless-plugjes',cat:'pech',tas:'frame',s:'Alleen als je tubeless rijdt.'},
+  {id:'i39',n:'Fietsslot',cat:'pech',tas:'frame',s:'Licht vouwslot of kabel. Zonder slot durf je niet te stoppen.'},
+  {id:'i42',n:'Powerbank 10.000 mAh',cat:'tech',tas:'frame',s:'Genoeg voor drie dagen Karoo én telefoon.'},
+  {id:'i43',n:'Oplaadkabels en USB-stekker',cat:'tech',tas:'frame'},
+  {id:'i21',n:'Armstukken',cat:'weer',tas:'frame'},
+  {id:'i22',n:'Beenstukken',cat:'weer',tas:'frame'},
+  {id:'i23',n:'Buff of nekwarmer',cat:'weer',tas:'frame'},
+  {id:'i24',n:'Lichte winddichte handschoenen',cat:'weer',tas:'frame'},
+  {id:'i54',n:'Zonnecrème',cat:'verzorging',tas:'frame'},
+  {id:'i56',n:'Pleisters en desinfecterende doekjes',cat:'verzorging',tas:'frame'},
+  {id:'i57',n:'Pijnstillers',cat:'verzorging',tas:'frame'},
+  {id:'i84',n:'Reflecterend hesje of band',cat:'divers',tas:'frame',s:'Voor de laatste kilometers naar het station als het tegenzit.'},
+
+  /* seat pack */
+  {id:'i10',n:'2× extra bibshort',cat:'reserve',tas:'seat',s:'Elke dag een verse. Dit is niet de plek om te besparen.'},
+  {id:'i11',n:'2× extra fietstrui of merino t-shirt',cat:'reserve',tas:'seat'},
+  {id:'i12',n:'2× extra fietssokken',cat:'reserve',tas:'seat'},
+  {id:'i13',n:'Lichte broek voor \u2019s avonds',cat:'reserve',tas:'seat',s:'Jogging- of wandelbroek die opgerold niets is.'},
+  {id:'i14',n:'T-shirt en onderbroek voor \u2019s avonds',cat:'reserve',tas:'seat'},
+  {id:'i15',n:'Lichte trui of hoodie',cat:'reserve',tas:'seat',s:'Voor het terras van Fort Bakkerskil. September koelt af.'},
+  {id:'i16',n:'Slippers of hele lichte schoenen',cat:'reserve',tas:'seat',s:'Je wil \u2019s avonds uit je fietsschoenen.'},
+  {id:'i20',n:'Regenjas',cat:'weer',tas:'seat',s:'Onder het elastisch koord bovenop de zadeltas, dan heb je hem snel.'},
+  {id:'i25',n:'Overschoenen',cat:'weer',tas:'seat',s:'Alleen als de voorspelling nat is.'},
+  {id:'i50',n:'Zeem of chamois crème',cat:'verzorging',tas:'seat',s:'Elke ochtend. Het echte risico van drie dagen op rij.'},
+  {id:'i51',n:'Tandenborstel en tandpasta',cat:'verzorging',tas:'seat'},
+  {id:'i52',n:'Deodorant',cat:'verzorging',tas:'seat'},
+  {id:'i53',n:'Kleine zeep of douchegel',cat:'verzorging',tas:'seat',s:'Reisformaat. Doet ook dienst als wasmiddel voor je bibshort.'},
+  {id:'i46',n:'Oordoppen',cat:'tech',tas:'seat',s:'Vreemd bed, dikke fortmuren, maar toch.'},
+  {id:'i83',n:'Klein microvezel handdoekje',cat:'divers',tas:'seat'},
+  {id:'i80',n:'Kleine drybag of diepvrieszakjes',cat:'divers',tas:'seat',s:'De tassen zijn waterafstotend, niet waterdicht. Droge kleren wil je droog houden.'},
+  {id:'i81',n:'Vuilniszakje voor natte kleding',cat:'divers',tas:'seat'}
+];
+
+var TODO=[
+  {id:'t01',n:'Fietsplaats reserveren op de EuroCity naar Amsterdam',cat:'nu',s:'12 plaatsen per trein. Dit eerst, alles anders daarna.'},
+  {id:'t02',n:'Naarden vastleggen — Bussummerstraat 35, via Airbnb',cat:'nu',s:'Vraag de host meteen naar de fietsenstalling en het vertrekuur.'},
+  {id:'t03',n:'Fort Bakkerskil vastleggen — Kildijk 143, Nieuwendijk',cat:'nu',s:'info@fortbakkerskil.nl of +31 6 45 93 48 92. Klein adres, septemberweekend.'},
+  {id:'t04',n:'Bikepacking-tassen reserveren bij Adventure Bikes',cat:'nu'},
+  {id:'t05',n:'Boodschappenlijst afwerken',cat:'nu',s:'Alles wat je hierboven op \u201Ekopen\u201D hebt gezet.'},
+
+  {id:'t10',n:'Tassen monteren en afstellen op je fiets',cat:'week',s:'Check bidonhouders en de ruimte tussen zadel en achterband.'},
+  {id:'t11',n:'Proefrit van minstens 30 km met volle tassen',cat:'week',s:'De enige manier om erachter te komen wat schuurt, slingert of rammelt.'},
+  {id:'t12',n:'Fiets nakijken: ketting, remblokken, banden, spaakspanning',cat:'week'},
+  {id:'t13',n:'Banden op bikepacking-druk zetten (±4 tot 4,5 bar)',cat:'week'},
+  {id:'t14',n:'Treintickets kopen voor heen en terug',cat:'week'},
+  {id:'t15',n:'Route Purmerend station → Fort bij Edam uittekenen in Komoot',cat:'week',s:'9 km zonder LF-bordjes. Doe dit vooraf, niet op het perron.'},
+  {id:'t16',n:'Fietskaart Dal kopen voor zaterdagochtend',cat:'week',s:'Voor de Sprinter naar Purmerend. Je hebt er maandag opnieuw een nodig.'},
+
+  {id:'t20',n:'Dag-GPX\u2019s op de Karoo zetten en testen',cat:'dagen'},
+  {id:'t21',n:'LF-app en Riveer-app installeren',cat:'dagen'},
+  {id:'t27',n:'Pontkaartje vooraf kopen in de Riveer-app',cat:'dagen',s:'app.riveer.nl/nl/kaartje-kopen — dan hoef je aan boord alleen te scannen.'},
+  {id:'t22',n:'Routewijzigingen checken op nederlandfietsland.nl',cat:'dagen'},
+  {id:'t23',n:'Laatste afvaart pont Gorinchem–Woudrichem op zondag opzoeken',cat:'dagen',s:'Je harde tussentijd voor zondag. Check hem zaterdagavond nog eens.'},
+  {id:'t24',n:'Weerbericht bekijken en regenkleding beslissen',cat:'dagen'},
+  {id:'t25',n:'Tickets en boekingen offline opslaan op je telefoon',cat:'dagen'},
+  {id:'t26',n:'Powerbank en alle lampjes opladen',cat:'dagen'}
+];
+var TODOCAT={nu:'Nu meteen — dit is schaars',week:'Week ervoor — fiets en materiaal',dagen:'Laatste dagen — digitaal en actueel'};
+
+/* ---------------- state & opslag ---------------- */
+var KEY='waterlinie-2026-v1';
+var state={check:{},koop:{}};
+
+/* Twee lagen, in volgorde van voorkeur:
+   1. window.storage  — server-side bij Claude, dus ook op je andere toestellen
+   2. overzetcode     — handmatig kopiëren/plakken, werkt altijd en overal        */
+var cloud=(typeof window!=='undefined' && window.storage && typeof window.storage.get==='function');
+var laatsteFout=null;
+
+async function load(){
+  if(!cloud) return;
+  try{
+    var r=await window.storage.get(KEY);
+    if(r&&r.value){var d=JSON.parse(r.value);state.check=d.check||{};state.koop=d.koop||{};}
+  }catch(e){ /* nog niets bewaard: geen fout */ }
+}
+
+var saveTimer=null, bezig=false;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(function(){
+    renderCode();
+    if(!cloud){ renderStatus(); return; }
+    bezig=true; renderStatus();
+    window.storage.set(KEY,JSON.stringify(state)).then(function(r){
+      bezig=false; laatsteFout=r?null:'niet opgeslagen'; renderStatus();
+    }).catch(function(e){
+      bezig=false; laatsteFout=(e&&e.message)||'niet opgeslagen'; renderStatus();
+    });
+  },300);
+}
+
+function renderStatus(){
+  var el=document.getElementById('opslagStatus');
+  if(!el) return;
+  el.className='status';
+  if(!cloud){
+    el.className='status warn';
+    el.innerHTML='<b>Niet automatisch bewaard.</b> Open dit bestand in Claude, of gebruik de overzetcode onderaan deze sectie.';
+  }else if(bezig){
+    el.innerHTML='Bewaren…';
+  }else if(laatsteFout){
+    el.className='status warn';
+    el.innerHTML='<b>Bewaren mislukt.</b> Kopieer de overzetcode onderaan zodat je niets kwijtraakt.';
+  }else{
+    var t=new Date();
+    var hh=('0'+t.getHours()).slice(-2), mm=('0'+t.getMinutes()).slice(-2);
+    el.innerHTML='<b>Bewaard om '+hh+':'+mm+'.</b> Open deze pagina op een ander toestel en je vinkjes staan er ook.';
+  }
+}
+
+/* ---- overzetcode ---- */
+function maakCode(){
+  var c=Object.keys(state.check).filter(function(k){return state.check[k];}).sort().join(',');
+  var k=Object.keys(state.koop).filter(function(x){return state.koop[x];}).sort().join(',');
+  var ruw='WL1|'+c+'|'+k;
+  try{ return btoa(ruw).replace(/=+$/,''); }catch(e){ return ruw; }
+}
+function leesCode(code){
+  code=(code||'').trim().replace(/\s+/g,'');
+  if(!code) return null;
+  var ruw;
+  try{ ruw=(code.indexOf('WL1|')===0)?code:atob(code+'==='.slice((code.length+3)%4)); }
+  catch(e){ return null; }
+  var d=ruw.split('|');
+  if(d[0]!=='WL1') return null;
+  var uit={check:{},koop:{}};
+  (d[1]||'').split(',').forEach(function(x){ if(x) uit.check[x]=true; });
+  (d[2]||'').split(',').forEach(function(x){ if(x) uit.koop[x]=true; });
+  return uit;
+}
+var codeVuil=false;
+function renderCode(){
+  var ta=document.getElementById('syncCode');
+  if(ta && !codeVuil && document.activeElement!==ta) ta.value=maakCode();
+}
+function syncMelding(tekst,fout){
+  var el=document.getElementById('syncStatus');
+  if(!el) return;
+  el.className='status'+(fout?' warn':'');
+  el.innerHTML=fout?('<b>'+tekst+'</b>'):tekst;
+  setTimeout(function(){ if(el.innerHTML.indexOf(tekst)>-1) el.innerHTML=''; },4000);
+}
+
+/* ---------------- render ---------------- */
+var filterKoop=false, filterOpen=false;
+
+function itemRow(it){
+  var done=!!state.check[it.id], koop=!!state.koop[it.id];
+  return '<li class="item'+(done?' done':'')+'" data-id="'+it.id+'">'+
+    '<input type="checkbox" id="c-'+it.id+'"'+(done?' checked':'')+'>'+
+    '<label class="lbl" for="c-'+it.id+'">'+it.n+(it.s?'<small>'+it.s+'</small>':'')+'</label>'+
+    '<span class="cat-chip">'+CATLABEL[it.cat]+'</span>'+
+    '<button class="koop'+(koop?' on':'')+'" data-koop="'+it.id+'">'+(koop?'kopen ✓':'kopen')+'</button>'+
+    '</li>';
+}
+function zichtbaar(it){
+  if(filterKoop && !state.koop[it.id]) return false;
+  if(filterOpen && state.check[it.id]) return false;
+  return true;
+}
+function renderPaklijst(){
+  var out='';
+  TASSEN.forEach(function(t){
+    var lijst=ITEMS.filter(function(i){return i.tas===t.k;});
+    var zicht=lijst.filter(zichtbaar);
+    if(!zicht.length) return;
+    var gedaan=lijst.filter(function(i){return state.check[i.id];}).length;
+    var meter = t.vol
+      ? '<div class="tasmeter"><span class="tasbar"><i style="width:'+Math.round(gedaan/lijst.length*100)+'%"></i></span><span>'+gedaan+'/'+lijst.length+'</span></div>'
+      : '<span class="groep-tel">'+gedaan+' / '+lijst.length+'</span>';
+    out+='<div class="groep"><div class="groep-head"><div><h4>'+t.naam+'</h4>'+
+      '<div style="font-size:13.5px;color:var(--water-45);margin-top:2px">'+t.uitleg+'</div></div>'+meter+'</div>'+
+      '<ul class="items">'+zicht.map(itemRow).join('')+'</ul></div>';
+  });
+  if(!out) out='<div class="card"><p style="color:var(--water-45)">Geen items in deze filter. Zet de filter uit om alles te zien.</p></div>';
+  document.getElementById('paklijstView').innerHTML=out;
+}
+function renderTodo(){
+  var out='';
+  Object.keys(TODOCAT).forEach(function(c){
+    var lijst=TODO.filter(function(i){return i.cat===c;});
+    var gedaan=lijst.filter(function(i){return state.check[i.id];}).length;
+    out+='<div class="groep"><div class="groep-head"><h4>'+TODOCAT[c]+'</h4>'+
+      '<span class="groep-tel">'+gedaan+' / '+lijst.length+'</span></div><ul class="items">'+
+      lijst.map(function(it){
+        var done=!!state.check[it.id];
+        return '<li class="item'+(done?' done':'')+'" data-id="'+it.id+'">'+
+          '<input type="checkbox" id="c-'+it.id+'"'+(done?' checked':'')+'>'+
+          '<label class="lbl" for="c-'+it.id+'">'+it.n+(it.s?'<small>'+it.s+'</small>':'')+'</label></li>';
+      }).join('')+'</ul></div>';
+  });
+  document.getElementById('todoView').innerHTML=out;
+}
+function renderBoodschappen(){
+  var lijst=ITEMS.filter(function(i){return state.koop[i.id];});
+  var el=document.getElementById('boodschappenBody');
+  if(!lijst.length){
+    el.innerHTML='<p style="color:var(--water-45)">Niets aangevinkt. Loop de lijst door en markeer wat je nog niet in huis hebt.</p>';
+  }else{
+    el.innerHTML='<p style="margin-bottom:4px"><strong>'+lijst.length+' '+(lijst.length===1?'ding':'dingen')+'</strong> te halen voor je vertrekt.</p><ul>'+
+      lijst.map(function(i){return '<li>'+i.n+'</li>';}).join('')+'</ul>';
+  }
+}
+function renderMeter(){
+  var gedaan=ITEMS.filter(function(i){return state.check[i.id];}).length;
+  var kop=ITEMS.filter(function(i){return state.koop[i.id];}).length;
+  document.getElementById('meter').innerHTML='<b>'+gedaan+'</b> / '+ITEMS.length+' gepakt · <b>'+kop+'</b> te kopen';
+}
+function renderAll(){renderPaklijst();renderTodo();renderBoodschappen();renderMeter();renderCode();}
+
+/* ---------------- events ---------------- */
+document.addEventListener('change',function(e){
+  if(e.target.matches('.item input[type=checkbox]')){
+    state.check[e.target.closest('.item').dataset.id]=e.target.checked;
+    save(); renderAll();
+  }
+});
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-koop]');
+  if(b){ state.koop[b.dataset.koop]=!state.koop[b.dataset.koop]; save(); renderAll(); }
+});
+document.getElementById('fKopen').addEventListener('click',function(){
+  filterKoop=!filterKoop; if(filterKoop) filterOpen=false;
+  this.classList.toggle('on',filterKoop);
+  document.getElementById('fOpen').classList.remove('on');
+  renderPaklijst();
+});
+document.getElementById('fOpen').addEventListener('click',function(){
+  filterOpen=!filterOpen; if(filterOpen) filterKoop=false;
+  this.classList.toggle('on',filterOpen);
+  document.getElementById('fKopen').classList.remove('on');
+  renderPaklijst();
+});
+document.getElementById('reset').addEventListener('click',function(){
+  if(!confirm('Alle vinkjes en koop-markeringen wissen?')) return;
+  state={check:{},koop:{}}; codeVuil=false; save(); renderAll();
+});
+
+document.getElementById('syncCode').addEventListener('input',function(){ codeVuil=true; });
+document.getElementById('copyCode').addEventListener('click',function(){
+  var ta=document.getElementById('syncCode');
+  codeVuil=false; ta.value=maakCode(); ta.select(); ta.setSelectionRange(0,99999);
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(ta.value).then(function(){syncMelding('Code gekopieerd.');},
+      function(){syncMelding('Kopiëren lukte niet — selecteer de tekst zelf.',true);});
+  }else{
+    try{document.execCommand('copy');syncMelding('Code gekopieerd.');}
+    catch(e){syncMelding('Kopiëren lukte niet — selecteer de tekst zelf.',true);}
+  }
+});
+document.getElementById('applyCode').addEventListener('click',function(){
+  var nieuw=leesCode(document.getElementById('syncCode').value);
+  if(!nieuw){ syncMelding('Die code herken ik niet.',true); return; }
+  var n=Object.keys(nieuw.check).length+Object.keys(nieuw.koop).length;
+  if(!confirm('Je huidige vinkjes vervangen door deze code? ('+n+' items)')) return;
+  state=nieuw; codeVuil=false; save(); renderAll();
+  syncMelding('Hersteld.');
+});
+
+/* laatste redmiddel: bij het sluiten nog één keer wegschrijven */
+window.addEventListener('pagehide',function(){
+  if(cloud){ try{ window.storage.set(KEY,JSON.stringify(state)); }catch(e){} }
+});
+
+(async function(){
+  await load();
+  renderAll();
+  renderStatus();
+  var u=document.getElementById('syncUitleg');
+  if(u && !cloud){
+    u.innerHTML='Deze pagina staat nu buiten Claude geopend, dus automatisch bewaren werkt hier niet. '+
+      'Open het bestand in Claude om je vinkjes automatisch te laten bewaren en synchroniseren — of werk hier verder en zet je stand met de code hieronder over.';
+  }
+})();
+</script>
+</body>
+</html>
