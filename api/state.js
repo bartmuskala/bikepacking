@@ -34,7 +34,10 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const { blobs } = await list({ prefix: pathname, limit: 1 });
       if (!blobs.length) return res.status(200).json({ ok: true, state: null });
-      const r = await fetch(blobs[0].url + '?cache=0', { cache: 'no-store' });
+      const r = await fetch(blobs[0].url + '?cache=0', {
+        cache: 'no-store',
+        headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` }
+      });
       if (!r.ok) return res.status(200).json({ ok: true, state: null });
       return res.status(200).json({ ok: true, state: await r.json() });
     }
@@ -51,7 +54,7 @@ export default async function handler(req, res) {
         bijgewerkt: new Date().toISOString()
       };
       await put(pathname, JSON.stringify(schoon), {
-        access: 'public',
+        access: 'private',
         contentType: 'application/json',
         addRandomSuffix: false,
         allowOverwrite: true
