@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{
   --water:#0D2B36; --water-70:rgba(13,43,54,.70); --water-45:rgba(13,43,54,.45);
@@ -155,6 +156,16 @@ td.t{font-family:var(--mono);white-space:nowrap;font-size:13px}
 .tasmeter{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--water-45)}
 .tasbar{width:70px;height:5px;background:var(--lijn-sterk);border-radius:3px;overflow:hidden}
 .tasbar i{display:block;height:100%;background:var(--inundatie)}
+
+#routeKaart{height:440px;background:var(--polder);border:1px solid var(--lijn)}
+#routeKaart .leaflet-tooltip{font-family:var(--body);font-size:12.5px}
+.kaart-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:2px;vertical-align:1px}
+.kaart-caption{font-size:13px;color:var(--water-45);margin-top:10px}
+
+.winkels{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;margin-top:2px}
+.winkels a{color:var(--water-45);text-decoration:none;margin-right:10px}
+.winkels a:hover{color:var(--baksteen);text-decoration:underline}
+.winkels a:before{content:"→ "}
 
 .boodschappen{background:rgba(181,135,42,.10);border-left:3px solid var(--oker);padding:18px 20px;margin-top:20px}
 .boodschappen .kicker{color:var(--oker)}
@@ -434,13 +445,25 @@ footer .mono{letter-spacing:.05em}
   </div>
 
   <div class="card" style="margin-top:16px">
+    <div class="kicker">Interactief</div>
+    <h4>Kaart met de drie dagritten</h4>
+    <div id="routeKaart"></div>
+    <div class="tools" style="margin-top:14px;margin-bottom:0">
+      <button class="btn on" data-dag="1" id="kaartD1"><span class="kaart-dot" style="background:#6BA3AA"></span>Dag 1 · Edam → Naarden</button>
+      <button class="btn on" data-dag="2" id="kaartD2"><span class="kaart-dot" style="background:#3F7F89"></span>Dag 2 · Naarden → Bakkerskil</button>
+      <button class="btn on" data-dag="3" id="kaartD3"><span class="kaart-dot" style="background:#245C66"></span>Dag 3 · Bakkerskil → Bergen op Zoom</button>
+    </div>
+    <p class="kaart-caption">Getekend uit de GPX-bestanden hieronder. Zet een dag uit om de andere twee beter te zien.</p>
+  </div>
+
+  <div class="card" style="margin-top:16px">
     <div class="kicker">Meegeleverd</div>
     <h4>Je GPX-bestanden</h4>
     <table>
       <tr><th>Bestand</th><th>Traject</th><th>Afstand</th></tr>
-      <tr><td class="t">dag1-edam-naarden.gpx</td><td>Fort bij Edam → Naarden, de hele Stelling van Amsterdam</td><td class="t">138,5 km</td></tr>
-      <tr><td class="t">dag2-naarden-fort-bakkerskil.gpx</td><td>Naarden → Utrecht → Culemborg → pont → Fort Bakkerskil</td><td class="t">143,6 km</td></tr>
-      <tr><td class="t">dag3-fort-bakkerskil-bergen-op-zoom.gpx</td><td>Fort Bakkerskil → Willemstad → Bergen op Zoom</td><td class="t">122,5 km</td></tr>
+      <tr><td class="t"><a href="gpx/dag1-edam-naarden.gpx" download>dag1-edam-naarden.gpx</a></td><td>Fort bij Edam → Naarden, de hele Stelling van Amsterdam</td><td class="t">138,5 km</td></tr>
+      <tr><td class="t"><a href="gpx/dag2-naarden-fort-bakkerskil.gpx" download>dag2-naarden-fort-bakkerskil.gpx</a></td><td>Naarden → Utrecht → Culemborg → pont → Fort Bakkerskil</td><td class="t">143,6 km</td></tr>
+      <tr><td class="t"><a href="gpx/dag3-fort-bakkerskil-bergen-op-zoom.gpx" download>dag3-fort-bakkerskil-bergen-op-zoom.gpx</a></td><td>Fort Bakkerskil → Willemstad → Bergen op Zoom</td><td class="t">122,5 km</td></tr>
     </table>
     <p style="margin-top:12px;color:var(--water-45);font-size:13.5px">De 9 km van station Purmerend naar Fort bij Edam zit er niet in: dat is geen LF-route. Plan die apart in Komoot of Google Maps.</p>
   </div>
@@ -712,6 +735,12 @@ footer .mono{letter-spacing:.05em}
       <div class="kicker">Eten &amp; drinken</div>
       <h4>Eet vóór je honger hebt</h4>
       <p>Op ruim 130 km per dag verbrand je meer dan je onderweg opneemt. Eet elk uur iets, ook als je geen zin hebt. Plan per dag één echte lunchstop — Uithoorn op zaterdag, Culemborg op zondag, Klundert op maandag — en reken niet op een winkel in de polder.</p>
+      <p style="font-size:14px">
+        <strong>Uithoorn, km 91.</strong> Het Spoorhuis (in het oude stationsgebouw, lunch dagelijks 12:00–15:00) of Geniet aan de Amstel (terras aan het water, in het voormalige gemeentehuis).<br>
+        <strong>Culemborg, km 223.</strong> Brownies&amp;downieS op de Markt, of Tante Zas &amp; Co voor lunch met koffie en taart.<br>
+        <strong>Klundert, km 339.</strong> Gasterij 't Tolhuys of Grand Café Klunder bij Theater De Vest, allebei in het centrum.
+      </p>
+      <p style="color:var(--water-45);font-size:13.5px">Check openingstijden vooraf — kleine adressen, en op maandag is niet alles open.</p>
       <p>Twee bidons, bijvullen bij elke stop. Nederlandse horeca vult je bidon meestal gratis als je iets besteld hebt.</p>
     </div>
     <div class="card">
@@ -733,7 +762,15 @@ footer .mono{letter-spacing:.05em}
       <div class="kicker">Pech</div>
       <h4>Wat je zelf kan oplossen</h4>
       <p>Twee binnenbanden, plakset en een multitool dekken 95% van wat er misgaat. Wat je niet zelf oplost — gebroken derailleurhanger, kapot wiel — los je op met de trein: de route loopt langs of vlakbij stations in Purmerend, Uitgeest, Haarlem, Weesp, Utrecht, Culemborg, Leerdam, Gorinchem, Lage Zwaluwe, Roosendaal en Bergen op Zoom. Nederland is nooit ver van een spoorlijn.</p>
-      <p>Zet je pechhulpnummer en verzekeringsgegevens in je telefoon, niet alleen thuis.</p>
+      <p class="mono" style="font-size:13px;background:rgba(63,127,137,.09);padding:12px 14px;border-left:3px solid var(--inundatie)">
+        <strong>VWB Fietsbijstand</strong> (Europ Assistance)<br>
+        Noodnummer: <a href="tel:+3280078762">0800 787 62</a> (in België) · <a href="tel:+3225419159">+32 2 541 91 59</a> (vanuit buurlanden)<br>
+        Online: <a href="https://towing.europ-assistance.be" target="_blank" rel="noopener">towing.europ-assistance.be</a><br>
+        Polis-/lidnummer: 20195654 · Barcode: 2019565414540
+      </p>
+      <p>Dekt België, Nederland en Luxemburg vanaf 1 km buiten je vertrekpunt, en Duitsland/Frankrijk tot 50 km over de grens — je hele route valt hierbinnen. Bij pech: bellen of online aanvragen met je lidnummer, naam, postcode en locatie, gemiddeld 45 minuten ter plaatse. Ze vervoeren jou en je fiets naar een fietsenmaker of je bestemming; onderdelen en reparatiekosten zijn niet gedekt.</p>
+      <p><a href="https://vwb.be/134/Fietsbijstand" target="_blank" rel="noopener">Meer over VWB Fietsbijstand →</a></p>
+      <p>Zet dit ook los in je telefoon (foto of notitie), niet alleen op deze pagina — voor als je geen bereik hebt.</p>
     </div>
     <div class="card">
       <div class="kicker">Slot</div>
@@ -762,6 +799,7 @@ footer .mono{letter-spacing:.05em}
   <p>Route-informatie: Nederland Fietsland. Vaartijden: Riveer. Ticketvoorwaarden: NS, NS International en NMBS. Controleer prijzen, vaartijden en routewijzigingen kort voor vertrek — die veranderen.</p>
 </div></footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 /* ---------------- de linie bovenaan ---------------- */
 (function(){
@@ -784,6 +822,69 @@ footer .mono{letter-spacing:.05em}
     html+='<div class="linie-lab" style="left:'+pct(m.km)+'%">'+m.t+'</div>';
   });
   bar.innerHTML=html;
+})();
+
+/* ---------------- route kaart ---------------- */
+(function(){
+  var kaartEl=document.getElementById('routeKaart');
+  if(!kaartEl || typeof L==='undefined') return;
+  var DAGEN=[
+    {n:1,file:'gpx/dag1-edam-naarden.gpx',kleur:'#6BA3AA',label:'Dag 1 · Edam → Naarden'},
+    {n:2,file:'gpx/dag2-naarden-fort-bakkerskil.gpx',kleur:'#3F7F89',label:'Dag 2 · Naarden → Fort Bakkerskil'},
+    {n:3,file:'gpx/dag3-fort-bakkerskil-bergen-op-zoom.gpx',kleur:'#245C66',label:'Dag 3 · Fort Bakkerskil → Bergen op Zoom'}
+  ];
+  var map=L.map(kaartEl,{scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+  }).addTo(map);
+
+  var alleBounds=[];
+  function herpas(){
+    map.invalidateSize();
+    if(!alleBounds.length) return;
+    var bounds=alleBounds.reduce(function(a,b){return a.extend(b);});
+    map.fitBounds(bounds,{padding:[20,20]});
+  }
+  window.addEventListener('load',herpas);
+  window.addEventListener('resize',herpas);
+
+  function parseGpx(tekst){
+    var xml=new DOMParser().parseFromString(tekst,'application/xml');
+    var punten=xml.getElementsByTagName('trkpt');
+    var pts=[];
+    for(var i=0;i<punten.length;i++){
+      pts.push([parseFloat(punten[i].getAttribute('lat')),parseFloat(punten[i].getAttribute('lon'))]);
+    }
+    return pts;
+  }
+
+  var lagen={};
+  Promise.all(DAGEN.map(function(d){
+    return fetch(d.file).then(function(r){return r.text();}).then(function(tekst){
+      var pts=parseGpx(tekst);
+      if(!pts.length) return;
+      var groep=L.layerGroup();
+      L.polyline(pts,{color:d.kleur,weight:4,opacity:0.9}).addTo(groep);
+      L.circleMarker(pts[0],{radius:5,color:d.kleur,fillColor:'#F5F8F4',fillOpacity:1,weight:2})
+        .addTo(groep).bindTooltip(d.label+' · start');
+      L.circleMarker(pts[pts.length-1],{radius:5,color:d.kleur,fillColor:d.kleur,fillOpacity:1,weight:2})
+        .addTo(groep).bindTooltip(d.label+' · aankomst');
+      groep.addTo(map);
+      lagen[d.n]=groep;
+      alleBounds.push(L.latLngBounds(pts));
+    }).catch(function(){});
+  })).then(herpas);
+
+  [1,2,3].forEach(function(n){
+    var btn=document.getElementById('kaartD'+n);
+    if(!btn) return;
+    btn.addEventListener('click',function(){
+      var laag=lagen[n];
+      if(!laag) return;
+      if(map.hasLayer(laag)){ map.removeLayer(laag); btn.classList.remove('on'); }
+      else { laag.addTo(map); btn.classList.add('on'); }
+    });
+  });
 })();
 
 /* ---------------- data ---------------- */
@@ -1119,6 +1220,17 @@ function renderTodo(){
   });
   document.getElementById('todoView').innerHTML=out;
 }
+function zoekterm(naam){
+  return naam.replace(/^\d+[×x]\s*/i,'').replace(/\s*\(.*?\)\s*$/,'').split(' of ')[0];
+}
+function winkelLinks(naam){
+  var q=encodeURIComponent(zoekterm(naam));
+  return '<span class="winkels">'+
+    '<a href="https://www.futurumshop.nl/zoeken?q='+q+'" target="_blank" rel="noopener">Futurumshop</a>'+
+    '<a href="https://www.decathlon.be/nl/search?Ntt='+q+'" target="_blank" rel="noopener">Decathlon</a>'+
+    '<a href="https://www.mantel.com/search/?q='+q+'" target="_blank" rel="noopener">Mantel</a>'+
+    '</span>';
+}
 function renderBoodschappen(){
   var lijst=ITEMS.filter(function(i){return state.koop[i.id];});
   var el=document.getElementById('boodschappenBody');
@@ -1126,7 +1238,7 @@ function renderBoodschappen(){
     el.innerHTML='<p style="color:var(--water-45)">Niets aangevinkt. Loop de lijst door en markeer wat je nog niet in huis hebt.</p>';
   }else{
     el.innerHTML='<p style="margin-bottom:4px"><strong>'+lijst.length+' '+(lijst.length===1?'ding':'dingen')+'</strong> te halen voor je vertrekt.</p><ul>'+
-      lijst.map(function(i){return '<li>'+i.n+'</li>';}).join('')+'</ul>';
+      lijst.map(function(i){return '<li>'+i.n+winkelLinks(i.n)+'</li>';}).join('')+'</ul>';
   }
 }
 function renderMeter(){
