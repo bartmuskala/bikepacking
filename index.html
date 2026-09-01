@@ -38,7 +38,7 @@ a:hover{color:var(--baksteen)}
 h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15;margin:0}
 .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
 
-nav.top{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(219,227,221,.93);
+nav.top{position:fixed;top:0;left:0;right:0;z-index:1100;background:rgba(219,227,221,.93);
   backdrop-filter:blur(8px);border-bottom:1px solid var(--lijn-sterk)}
 nav.top .wrap{display:flex;gap:4px;align-items:center;height:56px}
 nav.top .brand{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
@@ -51,13 +51,13 @@ nav.top a{font-size:13.5px;font-weight:500;color:var(--water-70);text-decoration
 nav.top a:hover{background:rgba(13,43,54,.07);color:var(--water)}
 .menuBtn{display:none;flex:0 0 auto;background:none;border:none;font-size:22px;line-height:1;
   color:var(--water);cursor:pointer;padding:6px 8px;margin-left:auto}
-.live-fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:55;
+.live-fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:1100;
   background:var(--baksteen);color:#fff;font-size:14px;font-weight:600;text-decoration:none;
   padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(13,43,54,.32)}
 .live-fab:hover{background:#84291d;color:#fff}
 @media(max-width:640px){
   .menuBtn{display:block}
-  .navLinks{display:none;position:fixed;top:56px;left:0;right:0;z-index:50;
+  .navLinks{display:none;position:fixed;top:56px;left:0;right:0;z-index:1100;
     flex-direction:column;align-items:stretch;gap:0;overflow-y:auto;max-height:calc(100vh - 56px);
     background:var(--polder);border-bottom:1px solid var(--lijn-sterk)}
   .navLinks.open{display:flex}
